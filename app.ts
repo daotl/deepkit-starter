@@ -17,6 +17,8 @@ import {
 import { Logger } from '@deepkit/logger'
 import { type Positive } from '@deepkit/type'
 
+import { Config } from './config'
+
 export interface User {
   username: string
 }
@@ -33,19 +35,26 @@ export class UserManager {
   description: 'My super first command',
 })
 export class TestCommand implements Command {
-  constructor(protected userManager: UserManager, protected logger: Logger) {}
+  constructor(
+    protected config: Config['hello'],
+    protected userManager: UserManager,
+    protected logger: Logger,
+  ) {}
 
   execute(
-    @arg title: string,
+    @arg title?: string,
     @flag color: boolean = false,
     // FIXME: Validation not working for now:
     // https://deepkit.io/documentation/framework/cli
-    @flag year: number & Positive = 13,
+    @flag year?: number & Positive,
   ): void {
     this.userManager.addUser({ username: 'Peter' })
-    title = `Hello, ${title} @${year}`
+
+    title ??= this.config.title
+    title = `Hello, ${title} @${year ?? this.config.year}`
     if (color) {
-      title = `<yellow>${title}</yellow>`
+      const c = this.config.color
+      title = `<${c}>${title}</${c}>`
     }
     this.logger.log(title)
   }
@@ -105,6 +114,7 @@ class ServerListener {
 }
 
 void new App({
+  config: Config,
   controllers: [TestCommand],
   listeners: [ServerListener],
   providers: [UserManager],
@@ -114,6 +124,7 @@ void new App({
     }),
   ],
 })
+  .loadConfigFromEnv({ envFilePath: ['.env.local', '.env'] })
   .run()
   // eslint-disable-next-line no-console
   .catch(console.log)
