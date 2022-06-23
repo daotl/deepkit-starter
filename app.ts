@@ -1,5 +1,7 @@
 #!/usr/bin/env ts-node-script
 
+import 'reflect-metadata'
+
 import { type Command, App, arg, cli, flag } from '@deepkit/app'
 import { eventDispatcher } from '@deepkit/event'
 import {
@@ -16,6 +18,7 @@ import {
 } from '@deepkit/framework'
 import { Logger } from '@deepkit/logger'
 import { type Positive } from '@deepkit/type'
+import { PrismaClient } from '@prisma/client'
 
 import { Config } from './config'
 
@@ -38,17 +41,22 @@ export class TestCommand implements Command {
   constructor(
     protected config: Config['hello'],
     protected userManager: UserManager,
+    protected prisma: PrismaClient,
     protected logger: Logger,
   ) {}
 
-  execute(
+  async execute(
     @arg title?: string,
     @flag color: boolean = false,
     // FIXME: Validation not working for now:
     // https://deepkit.io/documentation/framework/cli
     @flag year?: number & Positive,
-  ): void {
+  ): Promise<void> {
     this.userManager.addUser({ username: 'Peter' })
+
+    const users = await this.prisma.user.findMany()
+    this.logger.log('Existing users:')
+    users.forEach((u) => this.logger.log(u))
 
     title ??= this.config.title
     title = `Hello, ${title} @${year ?? this.config.year}`
@@ -117,7 +125,7 @@ void new App({
   config: Config,
   controllers: [TestCommand],
   listeners: [ServerListener],
-  providers: [UserManager],
+  providers: [UserManager, PrismaClient],
   imports: [
     new FrameworkModule({
       // debug: true,
