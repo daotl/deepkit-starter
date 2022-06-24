@@ -4,7 +4,8 @@
     "outDir": "./dist",
     "paths": {
       "~/*": ["src/*"]
-    }
+    },
+    "noPropertyAccessFromIndexSignature": false
   },
   "reflection": true
 }

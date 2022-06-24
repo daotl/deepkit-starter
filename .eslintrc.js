@@ -8,6 +8,9 @@ module.exports = {
       parserOptions: {
         project: 'tsconfig.json',
       },
+      rules: {
+        '@typescript-eslint/consistent-type-imports': 0,
+      },
     },
   ],
 }

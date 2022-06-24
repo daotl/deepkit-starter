@@ -12,11 +12,13 @@
   },
   "main": "index.js",
   "scripts": {
-    "refract-gen": "cd prisma/refract && npm run gen",
-    "prisma-gen": "prisma generate",
+    "dev": "cross-env NODE_ENV=development ts-node-dev --exit-child --respawn src/app.ts server:start",
+    "start": "ts-node src/app.ts server:start",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "refract-gen": "cd prisma/refract && npm run gen",
+    "prisma-gen": "prisma generate",
     "prepare": "deepkit-type-install"
   },
   "prisma": {
@@ -45,14 +47,17 @@
     "@deepkit/template": "1.0.1-alpha.71",
     "@deepkit/type": "1.0.1-alpha.71",
     "@deepkit/workflow": "1.0.1-alpha.71",
+    "@graphql-yoga/node": "^2.9.2",
     "@prisma/client": "^3.15.2",
     "class-validator": "^0.13.2",
-    "graphql": "^16.5.0",
+    "cross-undici-fetch": "^0.4.8",
+    "graphql": "^15.8.0",
     "graphql-fields": "^2.0.3",
     "graphql-scalars": "^1.17.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.5.5",
-    "type-graphql": "^1.1.1"
+    "tslib": "^2.4.0",
+    "type-graphql": "1.2.0-rc.1"
   },
   "devDependencies": {
     "@daotl/eslint-config": "^0.3.25",
@@ -60,12 +65,14 @@
     "@deepkit/type-compiler": "1.0.1-alpha.71",
     "@types/graphql-fields": "^1.3.4",
     "@types/node": "^18.0.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8.18.0",
     "prettier": "^2.7.1",
     "prisma": "^3.15.2",
     "prisma-dbml-generator": "^0.9.1",
     "prisma-erd-generator": "^0.11.4",
     "ts-node": "^10.8.1",
+    "ts-node-dev": "^2.0.0",
     "typegraphql-prisma": "^0.20.4",
     "typescript": "^4.7.4"
   }

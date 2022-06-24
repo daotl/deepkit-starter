@@ -21,6 +21,8 @@ import { type Positive } from '@deepkit/type'
 import { PrismaClient } from '@prisma/client'
 
 import { Config } from './config'
+import GraphqlController from './graphql/controller'
+import HelloController from './rest/hello/controller'
 
 export interface User {
   username: string
@@ -121,11 +123,17 @@ class ServerListener {
   }
 }
 
+const prisma = new PrismaClient()
+
 void new App({
   config: Config,
-  controllers: [TestCommand],
+  controllers: [TestCommand, HelloController, GraphqlController],
   listeners: [ServerListener],
-  providers: [UserManager, PrismaClient],
+  providers: [
+    UserManager,
+    { provide: PrismaClient, useValue: prisma },
+    // { provide: PrismaClient, useValue: prisma, scope: 'http' },
+  ],
   imports: [
     new FrameworkModule({
       // debug: true,
