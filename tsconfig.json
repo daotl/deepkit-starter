@@ -1,7 +1,10 @@
 {
   "extends": "@daotl/tsconfig/node.json",
   "compilerOptions": {
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "paths": {
+      "~/*": ["src/*"]
+    }
   },
   "reflection": true
 }
