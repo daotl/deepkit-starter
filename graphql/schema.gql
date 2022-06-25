@@ -4,6 +4,7 @@
 # -----------------------------------------------
 
 type Query {
+  person(personInput: PersonInput!): Person!
   category(where: CategoryWhereUniqueInput!): Category
   findFirstCategory(where: CategoryWhereInput, orderBy: [CategoryOrderByWithRelationInput!], cursor: CategoryWhereUniqueInput, take: Int, skip: Int, distinct: [CategoryScalarFieldEnum!]): Category
   categories(where: CategoryWhereInput, orderBy: [CategoryOrderByWithRelationInput!], cursor: CategoryWhereUniqueInput, take: Int, skip: Int, distinct: [CategoryScalarFieldEnum!]): [Category!]!
@@ -24,7 +25,15 @@ type Query {
   users(where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int, distinct: [UserScalarFieldEnum!]): [User!]!
   aggregateUser(where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int): AggregateUser!
   groupByUser(where: UserWhereInput, orderBy: [UserOrderByWithAggregationInput!], by: [UserScalarFieldEnum!]!, having: UserScalarWhereWithAggregatesInput, take: Int, skip: Int): [UserGroupBy!]!
-  person(personInput: PersonInput!): Person!
+}
+
+type Person {
+  name: String!
+  tags: [String]
+}
+
+input PersonInput {
+  name: String!
 }
 
 type Category {
@@ -1080,15 +1089,6 @@ input NestedEnumRoleWithAggregatesFilter {
   _count: NestedIntFilter
   _min: NestedEnumRoleFilter
   _max: NestedEnumRoleFilter
-}
-
-type Person {
-  name: String!
-  tags: [String]
-}
-
-input PersonInput {
-  name: String!
 }
 
 type Mutation {

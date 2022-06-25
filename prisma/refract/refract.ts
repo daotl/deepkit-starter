@@ -41,7 +41,7 @@ void Refract({
     {
       name: 'typegraphql',
       provider: 'typegraphql-prisma',
-      output: '../src/graphql/generated/prisma',
+      output: '../src/graphql/prisma/generated',
     },
   ],
   output: path.resolve(__dirname, '../schema.prisma'),

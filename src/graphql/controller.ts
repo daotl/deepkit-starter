@@ -8,8 +8,8 @@ import path from 'path'
 import stream from 'stream'
 import { type BuildSchemaOptions, buildSchemaSync } from 'type-graphql'
 
-import { resolvers as prismaResolvers } from './generated/prisma'
 import helloResolver from './hello/resolver'
+import { resolvers as prismaResolvers } from './prisma/generated'
 
 const resolvers: BuildSchemaOptions['resolvers'] = [
   ...prismaResolvers,
