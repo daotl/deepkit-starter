@@ -6,15 +6,12 @@ import { PrismaClient } from '@prisma/client'
 import { Request } from 'cross-undici-fetch'
 import path from 'path'
 import stream from 'stream'
-import { type BuildSchemaOptions, buildSchemaSync } from 'type-graphql'
+import { buildSchemaSync } from 'type-graphql'
 
 import helloResolver from './hello/resolver'
 import { resolvers as prismaResolvers } from './prisma/generated'
 
-const resolvers: BuildSchemaOptions['resolvers'] = [
-  ...prismaResolvers,
-  helloResolver,
-]
+const resolvers = [...prismaResolvers, helloResolver] as const
 
 const schema = buildSchemaSync({
   resolvers,
