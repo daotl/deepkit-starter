@@ -24,11 +24,11 @@ import { Config } from './config'
 import GraphqlController from './graphql/controller'
 import HelloController from './rest/hello/controller'
 
-export interface User {
+interface User {
   username: string
 }
 
-export class UserManager {
+class UserManager {
   users: User[] = []
 
   addUser(user: User): void {
@@ -39,7 +39,7 @@ export class UserManager {
 @cli.controller('test', {
   description: 'My super first command',
 })
-export class TestCommand implements Command {
+class TestCommand implements Command {
   constructor(
     protected config: Config['hello'],
     protected userManager: UserManager,
