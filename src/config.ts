@@ -7,5 +7,6 @@ export class HelloConfig {
 }
 
 export class Config {
+  env: string = 'production'
   hello: HelloConfig = new HelloConfig()
 }

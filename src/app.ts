@@ -16,7 +16,7 @@ import {
   onServerWorkerBootstrapDone,
   onServerWorkerShutdown,
 } from '@deepkit/framework'
-import { Logger } from '@deepkit/logger'
+import { JSONTransport, Logger } from '@deepkit/logger'
 import { type Positive } from '@deepkit/type'
 import { PrismaClient } from '@prisma/client'
 
@@ -140,6 +140,18 @@ void new App({
     }),
   ],
 })
+  .setup((module, config: Config) => {
+    if (config.env === 'development') {
+      module
+        .getImportedModuleByClass(FrameworkModule)
+        .configure({ debug: true })
+    }
+
+    if (config.env === 'production') {
+      // enable logging JSON messages instead of formatted strings
+      module.setupProvider<Logger>().setTransport([new JSONTransport()])
+    }
+  })
   .loadConfigFromEnv({ envFilePath: ['.env.local', '.env'] })
   .run()
   // eslint-disable-next-line no-console
