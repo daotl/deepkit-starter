@@ -141,13 +141,13 @@ void new App({
   ],
 })
   .setup((module, config: Config) => {
-    if (config.env === 'development') {
+    if (config.debug) {
       module
         .getImportedModuleByClass(FrameworkModule)
         .configure({ debug: true })
     }
 
-    if (config.env === 'production') {
+    if (config.logFormat.toLowerCase() === 'json') {
       // enable logging JSON messages instead of formatted strings
       module.setupProvider<Logger>().setTransport([new JSONTransport()])
     }

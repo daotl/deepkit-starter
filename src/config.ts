@@ -7,6 +7,7 @@ export class HelloConfig {
 }
 
 export class Config {
-  env: string = 'production'
+  debug: boolean = false
+  logFormat: string = 'text'
   hello: HelloConfig = new HelloConfig()
 }

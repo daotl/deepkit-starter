@@ -8,6 +8,7 @@ import path from 'path'
 import stream from 'stream'
 import { buildSchemaSync } from 'type-graphql'
 
+import { createContext } from './context'
 import helloResolver from './hello/resolver'
 import { resolvers as prismaResolvers } from './prisma/generated'
 
@@ -36,7 +37,7 @@ export default class GraphqlController {
     // The real server is used as an Express middleware
     this.yoga = createServer<DeepkitHttpContext>({
       schema,
-      context: { prisma },
+      context: createContext(prisma),
     })
   }
 
@@ -73,12 +74,12 @@ export default class GraphqlController {
     // body: Readable.from(response.body) if it accepts a Node.js Readable
     res.writeHead(response.status, headers).end(response.body)
   }
-}
 
-// Placeholder
-// export class GraphqlController {
-//   @http.GET('/api/graphql')
-//   graphql(): string {
-//     return 'Hello World!'
-//   }
-// }
+  // Placeholder
+  // export class GraphqlController {
+  //   @http.GET('/api/graphql')
+  //   graphql(): string {
+  //     return 'Hello World!'
+  //   }
+  // }
+}
