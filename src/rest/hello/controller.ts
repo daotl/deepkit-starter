@@ -1,14 +1,27 @@
 import { http, HttpQuery } from '@deepkit/http'
+import { Group } from '@deepkit/type'
 import { PrismaClient } from '@prisma/client'
+
+class Person {
+  protected password: Group<'secret'> & string = 'secret'
+
+  constructor(
+    protected name: string,
+    protected email: string,
+    protected motto: string,
+  ) {}
+}
 
 @http.controller()
 export default class HelloController {
   constructor(protected prisma: PrismaClient) {}
 
   @http.GET('/api/hello/:name')
-  async hello(name: string, message?: HttpQuery<string>): Promise<string> {
+  @http.serialization({ groupsExclude: ['secret'] })
+  async hello(name: string, motto?: HttpQuery<string>): Promise<Person> {
     const users = await this.prisma.user.findMany({ where: { name } })
     const email = users && users[0] ? ` Your email is ${users[0].email}` : ''
-    return `Hello ${name}! ${email} ${message ?? 'No message'}`
+    return new Person(name, email, motto ?? 'No motto')
+    // return `Hello ${name}! ${email} ${motto ?? 'No motto'}`
   }
 }
