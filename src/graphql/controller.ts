@@ -1,48 +1,26 @@
 import 'reflect-metadata'
 
 import { http, HttpRequest, HttpResponse } from '@deepkit/http'
-import { type YogaNodeServerInstance, createServer } from '@graphql-yoga/node'
 import { PrismaClient } from '@prisma/client'
 import { Request } from 'cross-undici-fetch'
-import path from 'path'
 import stream from 'stream'
-import { buildSchemaSync } from 'type-graphql'
 
-import { createContext } from './context'
-import helloResolver from './hello/resolver'
-import { resolvers as prismaResolvers } from './prisma/generated'
+import { authGroup } from '~/auth'
 
-const resolvers = [...prismaResolvers, helloResolver] as const
-
-const schema = buildSchemaSync({
-  resolvers,
-  emitSchemaFile: {
-    path: path.resolve(__dirname, '../../graphql/schema.gql'),
-    commentDescriptions: true,
-    sortedSchema: false, // by default the printed schema is sorted alphabetically
-  },
-})
-
-interface DeepkitHttpContext {
-  req: HttpRequest
-  res: HttpResponse
-}
+import { type YogaServerInstance, createYogaServer } from './yoga'
 
 // Reference: https://www.graphql-yoga.com/docs/integrations/z-other-environments
 @http.controller()
 export default class GraphqlController {
   // eslint-disable-next-line @typescript-eslint/ban-types
-  private yoga: YogaNodeServerInstance<DeepkitHttpContext, {}, {}>
+  private yoga: YogaServerInstance
 
   constructor(protected prisma: PrismaClient) {
     // The real server is used as an Express middleware
-    this.yoga = createServer<DeepkitHttpContext>({
-      schema,
-      context: createContext(prisma),
-    })
+    this.yoga = createYogaServer(prisma)
   }
 
-  @http.ANY('/api/graphql')
+  @http.ANY('/api/graphql').use(authGroup('public'))
   async graphql(req: HttpRequest, res: HttpResponse): Promise<void> {
     // req.url is a full url here not a relative path
     const request = new Request(req.headers.host! + req.url!, {
