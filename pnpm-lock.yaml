@@ -25,6 +25,7 @@ specifiers:
   '@deepkit/type-compiler': 1.0.1-alpha.71
   '@deepkit/workflow': 1.0.1-alpha.71
   '@envelop/core': ^2.4.0
+  '@envelop/generic-auth': ^4.3.0
   '@envelop/graphql-jit': ^4.3.0
   '@graphql-yoga/node': ^2.11.1
   '@prisma/client': ^3.15.2
@@ -74,6 +75,7 @@ dependencies:
   '@deepkit/type': 1.0.1-alpha.71_74pspjs43vu7l36mkeqjuh3scu
   '@deepkit/workflow': 1.0.1-alpha.71_rs3ubpkl57q4jgqjrxfokhstyq
   '@envelop/core': 2.4.0_graphql@15.8.0
+  '@envelop/generic-auth': 4.3.0_qddmu5n6cjyypu2ybibyrgmic4
   '@envelop/graphql-jit': 4.3.0_qddmu5n6cjyypu2ybibyrgmic4
   '@graphql-yoga/node': 2.11.1_graphql@15.8.0
   '@prisma/client': 3.15.2_prisma@3.15.2
@@ -701,6 +703,28 @@ packages:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
       '@envelop/types': 2.3.0_graphql@15.8.0
+      graphql: 15.8.0
+    dev: false
+
+  /@envelop/extended-validation/1.7.0_qddmu5n6cjyypu2ybibyrgmic4:
+    resolution: {integrity: sha512-tvp5CqPFswncQKzbud9u1+dK2vQwum9ulu8HtUBut8LxALqqPEg0weUfx9crW4Z/hJo6TV1rBp6BdUfwkiY28g==}
+    peerDependencies:
+      '@envelop/core': ^2.4.0
+      graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
+    dependencies:
+      '@envelop/core': 2.4.0_graphql@15.8.0
+      '@graphql-tools/utils': 8.8.0_graphql@15.8.0
+      graphql: 15.8.0
+    dev: false
+
+  /@envelop/generic-auth/4.3.0_qddmu5n6cjyypu2ybibyrgmic4:
+    resolution: {integrity: sha512-beiUR2N4L6AMXxGs5oVFvoaW8SURRfUKQDn79VES9OAX1hy9L2t9AgUyeyfrIFdMCzft8JR9QQPdXEG9YHSk7Q==}
+    peerDependencies:
+      '@envelop/core': ^2.4.0
+      graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
+    dependencies:
+      '@envelop/core': 2.4.0_graphql@15.8.0
+      '@envelop/extended-validation': 1.7.0_qddmu5n6cjyypu2ybibyrgmic4
       graphql: 15.8.0
     dev: false
 

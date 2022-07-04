@@ -1,4 +1,3 @@
-import { envelop } from '@envelop/core'
 import { useGraphQlJit } from '@envelop/graphql-jit'
 import { type YogaNodeServerInstance, createServer } from '@graphql-yoga/node'
 import { PrismaClient } from '@prisma/client'
@@ -6,14 +5,18 @@ import { type ExecutionResult } from 'graphql'
 import path from 'path'
 import { buildSchemaSync } from 'type-graphql'
 
+import { type HttpContext } from '~/http'
 import type { DeepkitHttpContext } from '~/types/deepkit'
 
 import { createContext } from './context'
 import helloResolver from './hello/resolver'
+import genericAuthPlugin from './plugin/genericAuth'
 import { resolvers as prismaResolvers } from './prisma/generated'
 
+export type TServerContext = DeepkitHttpContext & HttpContext
+
 export type YogaServerInstance = YogaNodeServerInstance<
-  DeepkitHttpContext,
+  TServerContext,
   // eslint-disable-next-line @typescript-eslint/ban-types
   {},
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -32,7 +35,7 @@ const schema = buildSchemaSync({
 })
 
 export function createYogaServer(prisma: PrismaClient): YogaServerInstance {
-  return createServer<DeepkitHttpContext>({
+  return createServer<TServerContext>({
     plugins: [
       useGraphQlJit(
         {
@@ -49,6 +52,7 @@ export function createYogaServer(prisma: PrismaClient): YogaServerInstance {
           },
         },
       ),
+      genericAuthPlugin,
     ],
     context: createContext(prisma),
     schema,

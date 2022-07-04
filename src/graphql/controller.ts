@@ -5,12 +5,13 @@ import { PrismaClient } from '@prisma/client'
 import { Request } from 'cross-undici-fetch'
 import stream from 'stream'
 
-import { authGroup } from '~/auth'
+import { AutenticatedUserParameterResolver, authGroup } from '~/auth'
+import { UserCls } from '~/model'
 
 import { type YogaServerInstance, createYogaServer } from './yoga'
 
 // Reference: https://www.graphql-yoga.com/docs/integrations/z-other-environments
-@http.controller()
+@http.controller().resolveParameter(UserCls, AutenticatedUserParameterResolver)
 export default class GraphqlController {
   // eslint-disable-next-line @typescript-eslint/ban-types
   private yoga: YogaServerInstance
@@ -20,8 +21,29 @@ export default class GraphqlController {
     this.yoga = createYogaServer(prisma)
   }
 
-  @http.ANY('/api/graphql').use(authGroup('public'))
-  async graphql(req: HttpRequest, res: HttpResponse): Promise<void> {
+  @http.POST('/api/graphql').use(authGroup('protected'))
+  async handleGraphql(
+    req: HttpRequest,
+    res: HttpResponse,
+    user: UserCls,
+  ): Promise<void> {
+    return this.handleRequest(req, res, user)
+  }
+
+  @http.GET('/api/graphql').use(authGroup('public'))
+  async graphiql(
+    req: HttpRequest,
+    res: HttpResponse,
+    user: UserCls,
+  ): Promise<void> {
+    return this.handleRequest(req, res, user)
+  }
+
+  async handleRequest(
+    req: HttpRequest,
+    res: HttpResponse,
+    user: UserCls,
+  ): Promise<void> {
     // req.url is a full url here not a relative path
     const request = new Request(req.headers.host! + req.url!, {
       method: req.method,
@@ -40,6 +62,7 @@ export default class GraphqlController {
     const response = await this.yoga.handleRequest(request, {
       req,
       res,
+      user,
     })
     // response is a WHATWG `Response` object
 
