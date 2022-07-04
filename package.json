@@ -22,7 +22,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "refract-gen": "cd prisma/refract && npm run gen",
     "prisma-gen": "prisma generate",
-    "prepare": "deepkit-type-install"
+    "prepare": "( cd prisma/refract ; pnpm i ) && deepkit-type-install"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
