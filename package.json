@@ -50,6 +50,8 @@
     "@deepkit/template": "1.0.1-alpha.71",
     "@deepkit/type": "1.0.1-alpha.71",
     "@deepkit/workflow": "1.0.1-alpha.71",
+    "@envelop/core": "^2.4.0",
+    "@envelop/graphql-jit": "^4.3.0",
     "@graphql-yoga/node": "^2.11.1",
     "@prisma/client": "^3.15.2",
     "class-validator": "^0.13.2",
