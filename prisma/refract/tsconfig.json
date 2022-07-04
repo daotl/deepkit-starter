@@ -1,0 +1,3 @@
+{
+  "extends": "@daotl/tsconfig/node.json"
+}

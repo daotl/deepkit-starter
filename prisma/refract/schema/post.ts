@@ -26,6 +26,6 @@ Post.Field('id', Int(Id, Default('autoincrement()')))
   )
   .Field('authorId', Int(Nullable))
   .Relation('categories', OneToMany(Category))
-// .Raw(`@@map("comments")`)
+// .Block(`@@map("comments")`)
 
 export default []
