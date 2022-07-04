@@ -9,5 +9,6 @@ export class HelloConfig {
 export class Config {
   debug: boolean = false
   logFormat: string = 'text'
+
   hello: HelloConfig = new HelloConfig()
 }

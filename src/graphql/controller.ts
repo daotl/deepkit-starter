@@ -29,6 +29,7 @@ interface DeepkitHttpContext {
 }
 
 // Reference: https://www.graphql-yoga.com/docs/integrations/z-other-environments
+@http.controller()
 export default class GraphqlController {
   // eslint-disable-next-line @typescript-eslint/ban-types
   private yoga: YogaNodeServerInstance<DeepkitHttpContext, {}, {}>

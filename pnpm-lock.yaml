@@ -26,6 +26,7 @@ specifiers:
   '@deepkit/workflow': 1.0.1-alpha.71
   '@graphql-yoga/node': ^2.9.2
   '@prisma/client': ^3.15.2
+  '@types/express': ^4.17.13
   '@types/graphql-fields': ^1.3.4
   '@types/node': ^18.0.0
   class-validator: ^0.13.2
@@ -35,6 +36,7 @@ specifiers:
   graphql: ^15.8.0
   graphql-fields: ^2.0.3
   graphql-scalars: ^1.17.0
+  module-alias: ^2.2.2
   prettier: ^2.7.1
   prisma: ^3.15.2
   prisma-dbml-generator: ^0.9.1
@@ -76,6 +78,7 @@ dependencies:
   graphql: 15.8.0
   graphql-fields: 2.0.3
   graphql-scalars: 1.17.0_graphql@15.8.0
+  module-alias: 2.2.2
   reflect-metadata: 0.1.13
   rxjs: 7.5.5
   tslib: 2.4.0
@@ -85,6 +88,7 @@ devDependencies:
   '@daotl/eslint-config': 0.3.25_t7klqbivlhgdz4fx4hyv6l5dci
   '@daotl/tsconfig': 0.1.0
   '@deepkit/type-compiler': 1.0.1-alpha.71_typescript@4.7.4
+  '@types/express': 4.17.13
   '@types/graphql-fields': 1.3.4
   '@types/node': 18.0.0
   cross-env: 7.0.3
@@ -1337,6 +1341,19 @@ packages:
       '@types/integer': 4.0.1
     dev: false
 
+  /@types/body-parser/1.19.2:
+    resolution: {integrity: sha512-ALYone6pm6QmwZoAgeyNksccT9Q4AWZQ6PvfwR37GT6r6FWUPguq6sUmNGSMV2Wr761oQoBxwGGa6DR5o1DC9g==}
+    dependencies:
+      '@types/connect': 3.4.35
+      '@types/node': 18.0.0
+    dev: true
+
+  /@types/connect/3.4.35:
+    resolution: {integrity: sha512-cdeYyv4KWoEgpBISTxWvqYsVy444DOqehiF3fM3ne10AmJ62RSyNkUnxMJXHQWRQQX2eR94m5y1IZyDwBjV9FQ==}
+    dependencies:
+      '@types/node': 18.0.0
+    dev: true
+
   /@types/cross-spawn/6.0.2:
     resolution: {integrity: sha512-KuwNhp3eza+Rhu8IFI5HUXRP0LIhqH5cAjubUvGXXthh4YYBuP2ntwEX+Cz8GJoZUHlKo247wPWOfA9LYEq4cw==}
     dependencies:
@@ -1352,6 +1369,23 @@ packages:
   /@types/estree/0.0.45:
     resolution: {integrity: sha512-jnqIUKDUqJbDIUxm0Uj7bnlMnRm1T/eZ9N+AVMqhPgzrba2GhGG5o/jCTwmdPK709nEZsGoMzXEDUjcXHa3W0g==}
     dev: false
+
+  /@types/express-serve-static-core/4.17.29:
+    resolution: {integrity: sha512-uMd++6dMKS32EOuw1Uli3e3BPgdLIXmezcfHv7N4c1s3gkhikBplORPpMq3fuWkxncZN1reb16d5n8yhQ80x7Q==}
+    dependencies:
+      '@types/node': 18.0.0
+      '@types/qs': 6.9.7
+      '@types/range-parser': 1.2.4
+    dev: true
+
+  /@types/express/4.17.13:
+    resolution: {integrity: sha512-6bSZTPaTIACxn48l50SR+axgrqm6qXFIxrdAKaG6PaJk3+zuUr35hBlgT7vOmJcum+OEaIBLtHV/qloEAFITeA==}
+    dependencies:
+      '@types/body-parser': 1.19.2
+      '@types/express-serve-static-core': 4.17.29
+      '@types/qs': 6.9.7
+      '@types/serve-static': 1.13.10
+    dev: true
 
   /@types/format-util/1.0.2:
     resolution: {integrity: sha512-9SrLCpgzWo2yHHhiMOX0WwgDh37nSbDbWUsRc1ss++o8O97E3tB6SJiyUQM21UeUsKvZNuhDCmkRaINZ4uJAfg==}
@@ -1387,6 +1421,10 @@ packages:
       '@types/unist': 2.0.6
     dev: true
 
+  /@types/mime/1.3.2:
+    resolution: {integrity: sha512-YATxVxgRqNH6nHEIsvg6k2Boc1JHI9ZbH5iWFFv/MTkchz3b1ieGDa5T0a9RznNdI0KhVbdbWSN+KWWrQZRxTw==}
+    dev: true
+
   /@types/minimatch/3.0.5:
     resolution: {integrity: sha512-Klz949h02Gz2uZCMGwDUSDS1YBlTdDDgbWHi+81l29tQALUtvz4rAYi5uoVhE5Lagoq6DeqAUlbrHvW/mXDgdQ==}
 
@@ -1401,6 +1439,14 @@ packages:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==}
     dev: true
 
+  /@types/qs/6.9.7:
+    resolution: {integrity: sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==}
+    dev: true
+
+  /@types/range-parser/1.2.4:
+    resolution: {integrity: sha512-EEhsLsD6UsDM1yFhAvy0Cjr6VwmpMWqFBCb9w07wVugF7w9nfajxLuVmngTIpgS6svCnm6Vaw+MZhoDCKnOfsw==}
+    dev: true
+
   /@types/retry/0.12.0:
     resolution: {integrity: sha512-wWKOClTTiizcZhXnPY4wikVAwmdYHp8q6DmC+EJUzAMsycb7HB32Kh9RN4+0gExjmPmZSAQjgURXIGATPegAvA==}
     dev: true
@@ -1411,6 +1457,13 @@ packages:
 
   /@types/semver/7.3.10:
     resolution: {integrity: sha512-zsv3fsC7S84NN6nPK06u79oWgrPVd0NvOyqgghV1haPaFcVxIrP4DLomRwGAXk0ui4HZA7mOcSFL98sMVW9viw==}
+
+  /@types/serve-static/1.13.10:
+    resolution: {integrity: sha512-nCkHGI4w7ZgAdNkrEu0bv+4xNV/XDqW+DydknebMOQwkpDGx8G+HTlj7R7ABI8i8nKxVw0wtKPi1D+lPOkh4YQ==}
+    dependencies:
+      '@types/mime': 1.3.2
+      '@types/node': 18.0.0
+    dev: true
 
   /@types/sqlstring/2.3.0:
     resolution: {integrity: sha512-kMFecDYYFk/f5fljO0UFrSPwU1JxY4mIjX6ic7MHv5nD6sEd3NYLoWcOV/3s6Drs7RHdCwTQdD5NdgVl0I2zzg==}
@@ -2804,14 +2857,14 @@ packages:
     dev: true
 
   /ee-first/1.1.1:
-    resolution: {integrity: sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=}
+    resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
     dev: false
 
   /emoji-regex/8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
 
   /encodeurl/1.0.2:
-    resolution: {integrity: sha1-rT/0yG7C0CkyL1oCw6mmBslbP1k=}
+    resolution: {integrity: sha512-TPJXq8JqFaVYm2CWmPvnP2Iyo4ZSM7/QKcSmuMLDObfpH5fi7RUGmd/rTDf+rut/saiDiQEeVTNgAmJEdAOx0w==}
     engines: {node: '>= 0.8'}
     dev: false
 
@@ -2902,7 +2955,7 @@ packages:
     dev: true
 
   /escape-html/1.0.3:
-    resolution: {integrity: sha1-Aljq5NPQwJdN4cFpGI7wBR0dGYg=}
+    resolution: {integrity: sha512-NiSupZ4OeuGwr68lGIeym/ksIZMJodUGOSCZ/FSnTxcrekbvqrgdUxlJOMpijaKZVjAJrWrGs/6Jy8OMuyj9ow==}
     dev: false
 
   /escape-string-regexp/1.0.5:
@@ -3319,7 +3372,7 @@ packages:
     dev: true
 
   /etag/1.8.1:
-    resolution: {integrity: sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=}
+    resolution: {integrity: sha512-aIL5Fx7mawVa300al2BnEE4iNvo1qETxLrPI/o05L7z6go7fCw1J6EQmbK4FmJ2AS7kgVF/KEZWufBfdClMcPg==}
     engines: {node: '>= 0.6'}
     dev: false
 
@@ -3498,7 +3551,7 @@ packages:
     dev: true
 
   /fresh/0.5.2:
-    resolution: {integrity: sha1-PYyt2Q2XZWn6g1qx+OSyOhBWBac=}
+    resolution: {integrity: sha512-zJ2mQYM18rEFOudeV4GShTGIQ7RbzA7ozbU9I/XBpm7kqgMywgmylMwXHxZJmkVoYkna9d2pVXVXPdYTP9ej8Q==}
     engines: {node: '>= 0.6'}
     dev: false
 
@@ -4393,6 +4446,10 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
     dev: true
+
+  /module-alias/2.2.2:
+    resolution: {integrity: sha512-A/78XjoX2EmNvppVWEhM2oGk3x4lLxnkEA4jTbaK97QKSDjkIoOsKQlfylt/d3kKKi596Qy3NP5XrXJ6fZIC9Q==}
+    dev: false
 
   /moment-mini/2.24.0:
     resolution: {integrity: sha512-9ARkWHBs+6YJIvrIp0Ik5tyTTtP9PoV0Ssu2Ocq5y9v8+NOOpWiRshAp8c4rZVWTOe+157on/5G+zj5pwIQFEQ==}

@@ -1,0 +1,20 @@
+@schema = http
+@host = localhost:8080
+@basePath = /api
+@accessToken = nex@daot.io
+@name =Nex
+@motto=aut vincere aut mori
+
+### Public API
+
+GET {{schema}}://{{host}}{{basePath}}/hello/{{name}}
+  ?motto={{motto}}
+
+## Protected
+
+### With access token
+GET {{schema}}://{{host}}{{basePath}}/protected
+Authorization: {{accessToken}}
+
+### No acess token
+GET {{schema}}://{{host}}{{basePath}}/protected

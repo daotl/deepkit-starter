@@ -2,6 +2,8 @@ import { http, HttpQuery } from '@deepkit/http'
 import { Group } from '@deepkit/type'
 import { PrismaClient } from '@prisma/client'
 
+import { authGroup } from '~/auth'
+
 class Person {
   protected password: Group<'secret'> & string = 'secret'
 
@@ -16,7 +18,7 @@ class Person {
 export default class HelloController {
   constructor(protected prisma: PrismaClient) {}
 
-  @http.GET('/api/hello/:name')
+  @http.GET('/api/hello/:name').use(authGroup('public'))
   @http.serialization({ groupsExclude: ['secret'] })
   async hello(name: string, motto?: HttpQuery<string>): Promise<Person> {
     const users = await this.prisma.user.findMany({ where: { name } })

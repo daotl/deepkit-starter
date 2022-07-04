@@ -1,6 +1,7 @@
 #!/usr/bin/env ts-node-script
 
 import 'reflect-metadata'
+import 'module-alias/register'
 
 import { type Command, App, arg, cli, flag } from '@deepkit/app'
 import { eventDispatcher } from '@deepkit/event'
@@ -20,9 +21,11 @@ import { JSONTransport, Logger } from '@deepkit/logger'
 import { type Positive } from '@deepkit/type'
 import { PrismaClient } from '@prisma/client'
 
-import { Config } from './config'
-import GraphqlController from './graphql/controller'
-import HelloController from './rest/hello/controller'
+import { AutenticatedUserParameterResolver, AuthListener } from '~/auth'
+import { Config } from '~/config'
+import GraphqlController from '~/graphql/controller'
+import HelloController from '~/rest/hello/controller'
+import ProtectedController from '~/rest/protected/controller'
 
 interface User {
   username: string
@@ -127,12 +130,19 @@ const prisma = new PrismaClient()
 
 void new App({
   config: Config,
-  controllers: [TestCommand, HelloController, GraphqlController],
-  listeners: [ServerListener],
+  controllers: [
+    TestCommand,
+    HelloController,
+    GraphqlController,
+    ProtectedController,
+  ],
+  middlewares: [],
+  listeners: [ServerListener, AuthListener],
   providers: [
     UserManager,
     { provide: PrismaClient, useValue: prisma },
     // { provide: PrismaClient, useValue: prisma, scope: 'http' },
+    AutenticatedUserParameterResolver,
   ],
   imports: [
     new FrameworkModule({
@@ -140,7 +150,9 @@ void new App({
     }),
   ],
 })
-  .setup((module, config: Config) => {
+  .setup(async (module, config: Config) => {
+    await prisma.$connect()
+
     if (config.debug) {
       module
         .getImportedModuleByClass(FrameworkModule)
