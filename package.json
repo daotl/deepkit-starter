@@ -20,8 +20,10 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "refract-gen": "cd prisma/refract && npm run gen",
-    "prisma-gen": "prisma generate",
+    "prisma:refract": "cd prisma/refract && npm run gen",
+    "prisma:gen": "prisma generate",
+    "prisma:dev": "prisma migrate dev --skip-generate",
+    "prisma:reset": "prisma migrate reset --skip-generate",
     "prepare": "( cd prisma/refract ; pnpm i ) && deepkit-type-install"
   },
   "prisma": {

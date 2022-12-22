@@ -41,7 +41,7 @@ admin admin
   
     User o|--|| Role : "enum:role"
     Profile o|--|| User : "user"
-    Post o{--|| User : "author"
+    Post o{--|o User : "author"
     Post o{--}o Category : ""
     Category o{--}o Post : ""
 ```
