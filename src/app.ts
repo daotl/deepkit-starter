@@ -1,5 +1,6 @@
 #!/usr/bin/env ts-node-script
 
+import 'reflect-metadata'
 import 'module-alias/register'
 
 import { type Command, App, arg, cli, flag } from '@deepkit/app'
@@ -22,6 +23,7 @@ import { PrismaClient } from '@prisma/client'
 
 import { AutenticatedUserParameterResolver, AuthListener } from '~/auth'
 import { Config } from '~/config'
+import GraphqlController from '~/graphql/controller'
 import HelloController from '~/rest/hello/controller'
 import ProtectedController from '~/rest/protected/controller'
 
@@ -128,7 +130,12 @@ const prisma = new PrismaClient()
 
 void new App({
   config: Config,
-  controllers: [TestCommand, HelloController, ProtectedController],
+  controllers: [
+    TestCommand,
+    HelloController,
+    GraphqlController,
+    ProtectedController,
+  ],
   middlewares: [],
   listeners: [ServerListener, AuthListener],
   providers: [
