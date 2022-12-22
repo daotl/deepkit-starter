@@ -1,1 +1,0 @@
-export { PostCategoriesArgs } from "./PostCategoriesArgs";

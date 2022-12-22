@@ -27,11 +27,6 @@ generator dbml {
 	projectDatabaseType  = "PostgreSQL"
 }
 
-generator typegraphql {
-	provider  = "typegraphql-prisma"
-	output    = "../src/graphql/prisma/generated"
-}
-
 // enums ---------------------------------------------------------------------------
 
 enum Role {

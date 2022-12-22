@@ -38,11 +38,6 @@ void Refract({
       projectName: 'BDWare BaaS Web',
       projectDatabaseType: 'PostgreSQL',
     },
-    {
-      name: 'typegraphql',
-      provider: 'typegraphql-prisma',
-      output: '../src/graphql/prisma/generated',
-    },
   ],
   output: path.resolve(__dirname, '../schema.prisma'),
   schema,
