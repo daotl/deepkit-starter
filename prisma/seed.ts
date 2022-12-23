@@ -1,4 +1,4 @@
-/* eslint-disable no-console,@typescript-eslint/explicit-function-return-type */
+/* eslint-disable no-console */
 import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()

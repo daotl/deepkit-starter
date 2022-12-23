@@ -1,4 +1,4 @@
-// refract https://github.com/cwqt/refract - generated in 1.645 ms -----------------
+// refract https://github.com/cwqt/refract - generated in 1.616 ms -----------------
 // datasource ----------------------------------------------------------------------
 
 datasource db {
@@ -11,7 +11,7 @@ datasource db {
 
 generator client {
 	provider         = "prisma-client-js"
-	previewFeatures  = []
+	previewFeatures  = ["interactiveTransactions","filteredRelationCount"]
 }
 
 generator erd {
@@ -30,9 +30,7 @@ generator dbml {
 // enums ---------------------------------------------------------------------------
 
 enum Role {
-	// user
 	user
-	// admin
 	admin
 }
 
