@@ -1,9 +1,10 @@
-// Generate the schema with `npx ts-node refract.ts`
+// Generate the schema with `npx ts-node-esm refract.ts`
+
+import path from 'node:path'
+import url from 'node:url'
 
 import _Refract from '@cwqt/refract'
 import { defaultImport } from 'default-import'
-import path from 'path'
-import url from 'url'
 
 import schema from './schema/index.js'
 
@@ -22,7 +23,17 @@ void Refract({
     {
       name: 'client',
       provider: 'prisma-client-js',
-      previewFeatures: [],
+      previewFeatures: [
+        'interactiveTransactions',
+        // https://github.com/prisma/prisma/releases/tag/4.3.0
+        // /@ts-expect-error ignore
+        // 'fieldReference', // Not supported by `prisma-trpc-generator@0.4.4` yet
+        // @ts-expect-error ignore
+        'filteredRelationCount',
+        // https://github.com/prisma/prisma/releases/tag/4.5.0
+        // /@ts-expect-error ignore
+        // 'extendedWhereUnique', // Not supported by `prisma-trpc-generator@0.4.4` yet
+      ],
     },
     {
       name: 'erd',
