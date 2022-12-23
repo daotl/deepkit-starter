@@ -1,0 +1,20 @@
+version: '3'
+name: deepkit-starter
+
+services:
+  db:
+    image: postgres:15
+    restart: unless-stopped
+    volumes:
+      - ~/dev/docker-volumes/deepkit-starter/postgres:/var/lib/postgresql/data
+    ports:
+      - 15432:5432
+    environment:
+      - POSTGRES_USER=daotl
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=deepkit-starter
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U fgbaas]
+      interval: 5s
+      timeout: 5s
+      retries: 5
