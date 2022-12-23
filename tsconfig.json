@@ -1,5 +1,5 @@
 {
-  "extends": "@daotl/tsconfig/node.json",
+  "extends": "./node_modules/@daotl/tsconfig/node.json",
   "compilerOptions": {
     "incremental": true,
     "outDir": "./dist",

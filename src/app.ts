@@ -20,7 +20,7 @@ import { JSONTransport, Logger } from '@deepkit/logger'
 import { type Positive } from '@deepkit/type'
 import { PrismaClient } from '@prisma/client'
 
-import { AutenticatedUserParameterResolver, AuthListener } from '~/auth'
+import { AuthModule } from '~/auth'
 import { Config } from '~/config'
 import HelloController from '~/rest/hello/controller'
 import ProtectedController from '~/rest/protected/controller'
@@ -130,17 +130,17 @@ void new App({
   config: Config,
   controllers: [TestCommand, HelloController, ProtectedController],
   middlewares: [],
-  listeners: [ServerListener, AuthListener],
+  listeners: [ServerListener],
   providers: [
     UserManager,
     { provide: PrismaClient, useValue: prisma },
     // { provide: PrismaClient, useValue: prisma, scope: 'http' },
-    AutenticatedUserParameterResolver,
   ],
   imports: [
     new FrameworkModule({
       // debug: true,
     }),
+    new AuthModule(),
   ],
 })
   .setup(async (module, config: Config) => {
