@@ -24,7 +24,7 @@
     "prisma:gen": "prisma generate",
     "prisma:dev": "prisma migrate dev --skip-generate",
     "prisma:reset": "prisma migrate reset --skip-generate",
-    "prepare": "( cd prisma/refract ; pnpm i ) && deepkit-type-install"
+    "prepare": "deepkit-type-install"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
