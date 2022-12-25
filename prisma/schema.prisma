@@ -1,4 +1,4 @@
-// refract https://github.com/cwqt/refract - generated in 1.616 ms -----------------
+// refract https://github.com/cwqt/refract - generated in 2.632 ms -----------------
 // datasource ----------------------------------------------------------------------
 
 datasource db {
@@ -12,6 +12,14 @@ datasource db {
 generator client {
 	provider         = "prisma-client-js"
 	previewFeatures  = ["interactiveTransactions","filteredRelationCount"]
+}
+
+generator trpc {
+	provider        = "prisma-trpc-generator"
+	output          = "../src/prisma/generated"
+	withMiddleware  = false
+	withShield      = false
+	contextPath     = "~/trpc/context"
 }
 
 generator erd {

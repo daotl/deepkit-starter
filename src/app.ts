@@ -24,6 +24,7 @@ import { AuthModule } from '~/auth'
 import { Config } from '~/config'
 import HelloController from '~/rest/hello/controller'
 import ProtectedController from '~/rest/protected/controller'
+import { TrpcModule } from '~/trpc'
 
 interface User {
   username: string
@@ -140,6 +141,7 @@ void new App({
     new FrameworkModule({
       // debug: true,
     }),
+    new TrpcModule(),
     new AuthModule(),
   ],
 })

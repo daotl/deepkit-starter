@@ -36,6 +36,15 @@ void Refract({
       ],
     },
     {
+      name: 'trpc',
+      provider: 'prisma-trpc-generator',
+      output: '../src/prisma/generated',
+      // @ts-expect-error ignore
+      withMiddleware: false,
+      withShield: false,
+      contextPath: '~/trpc/context',
+    },
+    {
       name: 'erd',
       provider: 'prisma-erd-generator',
       output: 'generated/erd.md',

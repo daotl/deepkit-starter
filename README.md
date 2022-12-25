@@ -19,7 +19,8 @@ pnpm prisma:reset
 pnpm dev
 ```
 
-Visit http://localhost:8080/api/hello/nex
+Visit: http://localhost:8080/api/hello/nex
+tRPC palyground: http://localhost:8080/api/trpc-playground
 
 # GraphQL branch
 

@@ -4,8 +4,9 @@
   "private": true,
   "packageManager": "pnpm@7.3.0",
   "description": "A Deepkit Framework starter template",
-  "license": "MIT",
   "author": "Nex Zhu <hitnexup@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/daotl/deepkit-starter",
   "repository": {
     "type": "git",
     "url": "https://github.com/daotl/deepkit-starter.git"
@@ -30,7 +31,6 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "prettier": "@daotl/prettier-config",
-  "homepage": "https://github.com/daotl/deepkit-starter",
   "dependencies": {
     "@deepkit/app": "1.0.1-alpha.85",
     "@deepkit/broker": "1.0.1-alpha.85",
@@ -53,11 +53,16 @@
     "@deepkit/type": "1.0.1-alpha.85",
     "@deepkit/workflow": "1.0.1-alpha.85",
     "@prisma/client": "^4.8.0",
+    "@trpc/client": "^10.6.0",
+    "@trpc/server": "^10.6.0",
     "cookie": "^0.5.0",
     "module-alias": "^2.2.2",
     "rxjs": "^7.8.0",
+    "superjson": "^1.12.1",
     "tlru": "^1.0.2",
-    "tslib": "^2.4.1"
+    "trpc-playground": "1.0.0-next.0",
+    "tslib": "^2.4.1",
+    "zod": "^3.20.2"
   },
   "devDependencies": {
     "@daotl/eslint-config": "^0.3.33",
@@ -72,6 +77,7 @@
     "prisma": "^4.8.0",
     "prisma-dbml-generator": "^0.10.0",
     "prisma-erd-generator": "^1.2.4",
+    "prisma-trpc-generator": "^0.8.1",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
     "typescript": "^4.8.4"

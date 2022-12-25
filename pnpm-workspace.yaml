@@ -1,4 +1,4 @@
 packages:
-  - 'prisma/refract'
+  - prisma/refract
   # exclude
   - '!**/test/**'
