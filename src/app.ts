@@ -1,7 +1,7 @@
 #!/usr/bin/env ts-node-script
 import 'module-alias/register'
 
-import { type Command, App, arg, cli, flag } from '@deepkit/app'
+import { App } from '@deepkit/app'
 import { eventDispatcher } from '@deepkit/event'
 import {
   FrameworkModule,
@@ -15,61 +15,15 @@ import {
   onServerWorkerBootstrapDone,
   onServerWorkerShutdown,
 } from '@deepkit/framework'
+import { registerStaticHttpController } from '@deepkit/http'
 import { JSONTransport, Logger } from '@deepkit/logger'
-import { type Positive } from '@deepkit/type'
 import { PrismaClient } from '@prisma/client'
 
 import { AuthModule } from '~/auth'
+import { TestCommand } from '~/cli'
 import { Config } from '~/config'
-import HelloController from '~/rest/hello/controller'
-import ProtectedController from '~/rest/protected/controller'
+import { HelloController, ProtectedController, SseController } from '~/rest'
 import { TrpcModule } from '~/trpc'
-
-interface User {
-  username: string
-}
-
-class UserManager {
-  users: User[] = []
-
-  addUser(user: User): void {
-    this.users.push(user)
-  }
-}
-
-@cli.controller('test', {
-  description: 'My super first command',
-})
-class TestCommand implements Command {
-  constructor(
-    protected config: Config['hello'],
-    protected userManager: UserManager,
-    protected prisma: PrismaClient,
-    protected logger: Logger,
-  ) {}
-
-  async execute(
-    @arg title?: string,
-    @flag color: boolean = false,
-    // FIXME: Validation not working for now:
-    // https://deepkit.io/documentation/framework/cli
-    @flag year?: number & Positive,
-  ): Promise<void> {
-    this.userManager.addUser({ username: 'Peter' })
-
-    const users = await this.prisma.user.findMany()
-    this.logger.log('Existing users:')
-    users.forEach((u) => this.logger.log(u))
-
-    title ??= this.config.title
-    title = `Hello, ${title} @${year ?? this.config.year}`
-    if (color) {
-      const c = this.config.color
-      title = `<${c}>${title}</${c}>`
-    }
-    this.logger.log(title)
-  }
-}
 
 const prisma = new PrismaClient()
 
@@ -144,10 +98,15 @@ export const app = new App({
     new TrpcModule(),
     new AuthModule(),
   ],
-  controllers: [TestCommand, HelloController, ProtectedController],
+  controllers: [
+    TestCommand,
+    HelloController,
+    ProtectedController,
+    SseController,
+  ],
   middlewares: [],
   listeners: [ServerListener],
-  providers: [UserManager, { provide: PrismaClient, useValue: prisma }],
+  providers: [{ provide: PrismaClient, useValue: prisma }],
 })
   .loadConfigFromEnv({ envFilePath: ['.env.local', '.env'] })
   .setup((module, config: Config) => {
@@ -165,11 +124,11 @@ export const app = new App({
     }
 
     // Serve static files from `public`
-    // registerStaticHttpController(module, {
-    //   path: '/',
-    //   localPath: 'public',
-    //   controllerName: 'StaticController',
-    // })
+    registerStaticHttpController(module, {
+      path: '/',
+      localPath: 'public',
+      controllerName: 'StaticController',
+    })
   })
 
 app

@@ -1,3 +1,5 @@
+docker-compose-dev
+prisma/schema.prisma
 generated
 vendor
 node_modules

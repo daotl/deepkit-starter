@@ -6,7 +6,7 @@ import { AutenticatedUserParameterResolver, authGroup } from '~/auth'
 @http
   .controller()
   .resolveParameterByName('user', AutenticatedUserParameterResolver)
-export default class ProtectedController {
+export class ProtectedController {
   constructor(protected prisma: PrismaClient) {}
 
   @http.GET('/api/protected').use(authGroup('protected'))

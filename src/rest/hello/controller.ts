@@ -15,7 +15,7 @@ class Person {
 }
 
 @http.controller()
-export default class HelloController {
+export class HelloController {
   constructor(protected prisma: PrismaClient) {}
 
   @http.GET('/api/hello/:name').use(authGroup('public'))
