@@ -1,5 +1,4 @@
 #!/usr/bin/env ts-node-script
-
 import 'module-alias/register'
 
 import { type Command, App, arg, cli, flag } from '@deepkit/app'
@@ -72,8 +71,10 @@ class TestCommand implements Command {
   }
 }
 
+const prisma = new PrismaClient()
+
 class ServerListener {
-  constructor(protected logger: Logger) {}
+  constructor(private logger: Logger) {}
 
   @eventDispatcher.listen(onServerBootstrap)
   onServerBootstrap(_event: typeof onServerBootstrap.event): void {
@@ -86,8 +87,12 @@ class ServerListener {
   }
 
   @eventDispatcher.listen(onServerMainBootstrap)
-  onServerMainBootstrap(_event: typeof onServerMainBootstrap.event): void {
+  async onServerMainBootstrap(
+    _event: typeof onServerMainBootstrap.event,
+  ): Promise<void> {
     this.logger.log('Main process: Application server bootstrap.')
+    await prisma.$connect()
+    // await app.get<TrpcController>().init()
   }
 
   @eventDispatcher.listen(onServerMainBootstrapDone)
@@ -115,8 +120,11 @@ class ServerListener {
   }
 
   @eventDispatcher.listen(onServerMainShutdown)
-  onServerMainShutdown(_event: typeof onServerMainShutdown.event): void {
+  async onServerMainShutdown(
+    _event: typeof onServerMainShutdown.event,
+  ): Promise<void> {
     this.logger.log('Main process: Application server shut down.')
+    await prisma.$disconnect()
   }
 
   @eventDispatcher.listen(onServerWorkerShutdown)
@@ -125,41 +133,46 @@ class ServerListener {
   }
 }
 
-const prisma = new PrismaClient()
-
-void new App({
+export const app = new App({
   config: Config,
-  controllers: [TestCommand, HelloController, ProtectedController],
-  middlewares: [],
-  listeners: [ServerListener],
-  providers: [
-    UserManager,
-    { provide: PrismaClient, useValue: prisma },
-    // { provide: PrismaClient, useValue: prisma, scope: 'http' },
-  ],
   imports: [
     new FrameworkModule({
       // debug: true,
+      // port: 8080,
+      publicDir: 'public',
     }),
     new TrpcModule(),
     new AuthModule(),
   ],
+  controllers: [TestCommand, HelloController, ProtectedController],
+  middlewares: [],
+  listeners: [ServerListener],
+  providers: [UserManager, { provide: PrismaClient, useValue: prisma }],
 })
-  .setup(async (module, config: Config) => {
-    await prisma.$connect()
-
+  .loadConfigFromEnv({ envFilePath: ['.env.local', '.env'] })
+  .setup((module, config: Config) => {
+    // Debug
     if (config.debug) {
       module
         .getImportedModuleByClass(FrameworkModule)
         .configure({ debug: true })
     }
 
+    // Logging
     if (config.logFormat.toLowerCase() === 'json') {
       // enable logging JSON messages instead of formatted strings
       module.setupProvider<Logger>().setTransport([new JSONTransport()])
     }
+
+    // Serve static files from `public`
+    // registerStaticHttpController(module, {
+    //   path: '/',
+    //   localPath: 'public',
+    //   controllerName: 'StaticController',
+    // })
   })
-  .loadConfigFromEnv({ envFilePath: ['.env.local', '.env'] })
+
+app
   .run()
   // eslint-disable-next-line no-console
   .catch(console.log)
