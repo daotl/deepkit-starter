@@ -1,7 +1,6 @@
 {
   "extends": "./node_modules/@daotl/tsconfig/node.json",
   "compilerOptions": {
-    "incremental": true,
     "outDir": "./dist",
     "baseUrl": ".",
     "paths": {
