@@ -889,7 +889,7 @@ function renderEdgeQL(
       .map(
         key =>
           `  ${key} := ${renderEdgeQL(
-            expr.__shape__[key],
+            expr.__shape__[key]!,
             ctx,
             renderShape,
             noImplicitDetached
@@ -1131,25 +1131,25 @@ ${indent(groupStatement.join("\n"), 4)}
               index += renderEdgeQL(end, ctx);
             }
           } else {
-            index = renderEdgeQL(args[1], ctx);
+            index = renderEdgeQL(args[1]!, ctx);
           }
 
-          return `${renderEdgeQL(args[0], ctx)}[${index}]`;
+          return `${renderEdgeQL(args[0]!, ctx)}[${index}]`;
         }
-        return `(${renderEdgeQL(args[0], ctx)} ${operator} ${renderEdgeQL(
-          args[1],
+        return `(${renderEdgeQL(args[0]!, ctx)} ${operator} ${renderEdgeQL(
+          args[1]!,
           ctx
         )})`;
       case OperatorKind.Postfix:
-        return `(${renderEdgeQL(args[0], ctx)} ${operator})`;
+        return `(${renderEdgeQL(args[0]!, ctx)} ${operator})`;
       case OperatorKind.Prefix:
-        return `(${operator} ${renderEdgeQL(args[0], ctx)})`;
+        return `(${operator} ${renderEdgeQL(args[0]!, ctx)})`;
       case OperatorKind.Ternary:
         if (operator === "if_else") {
-          return `(${renderEdgeQL(args[0], ctx)} IF ${renderEdgeQL(
-            args[1],
+          return `(${renderEdgeQL(args[0]!, ctx)} IF ${renderEdgeQL(
+            args[1]!,
             ctx
-          )} ELSE ${renderEdgeQL(args[2], ctx)})`;
+          )} ELSE ${renderEdgeQL(args[2]!, ctx)})`;
         } else {
           throw new Error(`Unknown operator: ${operator}`);
         }
@@ -1503,7 +1503,7 @@ function literalToEdgeQL(type: BaseType, val: any): string {
     if (isNamedTupleType(type)) {
       stringRep = `( ${Object.entries(val).map(
         ([key, value]) =>
-          `${key} := ${literalToEdgeQL(type.__shape__[key], value)}`
+          `${key} := ${literalToEdgeQL(type.__shape__[key]!, value)}`
       )} )`;
       skipCast = true;
     } else {
