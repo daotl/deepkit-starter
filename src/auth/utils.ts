@@ -3,7 +3,8 @@ import {
   HttpAction,
   RouteParameterResolverContext,
 } from '@deepkit/http'
-import { type User } from '@prisma/client'
+
+import { type User } from '~/models'
 
 import { type Session } from './session'
 

@@ -1,16 +1,16 @@
 import { createTRPCProxyClient, httpBatchLink } from '@trpc/client'
 import superjson from 'superjson'
 
-import { appRouter as prismaRouter } from '~/prisma/generated/routers'
+import { app } from '~/app'
+import { HelloRouter } from '~/hello'
 
 import { t } from './trpc'
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function createRouter() {
-  // List all the routers here
   return t.router({
     // List all the routers here
-    prisma: prismaRouter,
+    hello: app.get<HelloRouter>().router(),
   })
 }
 

@@ -1,3 +1,3 @@
 export class AuthConfig {
-  mockUserId: number = 1
+  mockUserId: string = '58f593d2-8752-11ed-aaf6-93aa3de653de'
 }

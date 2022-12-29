@@ -25,7 +25,7 @@ export class AuthController {
 
   @http.GET('/api/auth/signin').use(authGroup('public'))
   signIn(): SignInStatus {
-    const session: Session = { id: this.config.mockUserId.toString() }
+    const session: Session = { id: this.config.mockUserId }
     this.sessionCache.set(session.id, session)
     return new JSONResponse({ status: 'ok' }).status(200).headers({
       'Set-Cookie': [

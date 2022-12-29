@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { PrismaClient } from '@prisma/client'
+import { EdgedbClient } from '~/edgedb'
 
 const prisma = new PrismaClient()
 async function main(): Promise<void> {

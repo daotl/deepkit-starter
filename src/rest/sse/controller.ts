@@ -1,11 +1,11 @@
 import { http, HttpResponse } from '@deepkit/http'
-import { PrismaClient } from '@prisma/client'
 
 import { authGroup } from '~/auth'
+import { EdgedbClient } from '~/edgedb'
 
 @http.controller()
 export class SseController {
-  constructor(protected prisma: PrismaClient) {}
+  constructor(private edgedb: EdgedbClient) {}
 
   @http.GET('/api/sse').use(authGroup('public'))
   sse(resp: HttpResponse): void {

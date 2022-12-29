@@ -1,10 +1,10 @@
 import { eventDispatcher } from '@deepkit/event'
 import { httpWorkflow } from '@deepkit/http'
 import { Logger } from '@deepkit/logger'
-import { PrismaClient } from '@prisma/client'
 import cookie from 'cookie'
 
 import { Config } from '~/config'
+import { e, EdgedbClient } from '~/edgedb'
 import { cookieStr } from '~/http'
 
 import { type Session, SessionCache, sessionIdCookieName } from './session'
@@ -14,7 +14,7 @@ export class AuthListener {
   constructor(
     private logger: Logger,
     private config: Config['auth'],
-    private prisma: PrismaClient,
+    private edgedb: EdgedbClient,
     private sessionCache: SessionCache,
   ) {}
 
@@ -46,13 +46,16 @@ export class AuthListener {
 
     // Mock authenticated user for developing
     if (!mSession) {
-      mSession = { id: this.config.mockUserId.toString() }
+      mSession = { id: this.config.mockUserId }
     }
     const session: Session = mSession
 
-    const user = await this.prisma.user.findUnique({
-      where: { id: parseInt(mSession.id) },
-    })
+    const user = await e
+      .select(e.User, (_u) => ({
+        filter_single: { id: mSession!.id },
+        ...e.User['*'],
+      }))
+      .run(this.edgedb)
 
     // Not successfully signed-in
     if (!user) {

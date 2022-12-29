@@ -1,9 +1,9 @@
-import type { User } from '@prisma/client'
 import { initTRPC, TRPCError } from '@trpc/server'
 import superjson from 'superjson'
 
 import { extractUserFromRequest } from '~/auth'
 import { type HttpContext } from '~/http'
+import type { User } from '~/models'
 
 import { type Context } from './context'
 

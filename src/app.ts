@@ -17,15 +17,17 @@ import {
 } from '@deepkit/framework'
 import { registerStaticHttpController } from '@deepkit/http'
 import { JSONTransport, Logger } from '@deepkit/logger'
-import { PrismaClient } from '@prisma/client'
+import * as e from 'edgedb'
 
 import { AuthModule } from '~/auth'
 import { TestCommand } from '~/cli'
 import { Config } from '~/config'
+import { EdgedbClient } from '~/edgedb'
+import { HelloModule } from '~/hello'
 import { HelloController, ProtectedController, SseController } from '~/rest'
 import { TrpcModule } from '~/trpc'
 
-const prisma = new PrismaClient()
+const edgedbClient = e.createClient()
 
 class ServerListener {
   constructor(private logger: Logger) {}
@@ -41,11 +43,8 @@ class ServerListener {
   }
 
   @eventDispatcher.listen(onServerMainBootstrap)
-  async onServerMainBootstrap(
-    _event: typeof onServerMainBootstrap.event,
-  ): Promise<void> {
+  onServerMainBootstrap(_event: typeof onServerMainBootstrap.event): void {
     this.logger.log('Main process: Application server bootstrap.')
-    await prisma.$connect()
     // await app.get<TrpcController>().init()
   }
 
@@ -74,11 +73,8 @@ class ServerListener {
   }
 
   @eventDispatcher.listen(onServerMainShutdown)
-  async onServerMainShutdown(
-    _event: typeof onServerMainShutdown.event,
-  ): Promise<void> {
+  onServerMainShutdown(_event: typeof onServerMainShutdown.event): void {
     this.logger.log('Main process: Application server shut down.')
-    await prisma.$disconnect()
   }
 
   @eventDispatcher.listen(onServerWorkerShutdown)
@@ -97,6 +93,7 @@ export const app = new App({
     }),
     new TrpcModule(),
     new AuthModule(),
+    new HelloModule(),
   ],
   controllers: [
     TestCommand,
@@ -106,7 +103,7 @@ export const app = new App({
   ],
   middlewares: [],
   listeners: [ServerListener],
-  providers: [{ provide: PrismaClient, useValue: prisma }],
+  providers: [{ provide: EdgedbClient, useValue: edgedbClient }],
 })
   .loadConfigFromEnv({ envFilePath: ['.env.local', '.env'] })
   .setup((module, config: Config) => {

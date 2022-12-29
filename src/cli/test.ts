@@ -1,18 +1,18 @@
 import { type Command, arg, cli, flag } from '@deepkit/app'
 import { Logger } from '@deepkit/logger'
 import type { Positive } from '@deepkit/type'
-import { PrismaClient } from '@prisma/client'
 
 import { Config } from '~/config'
+import { e, EdgedbClient } from '~/edgedb'
 
 @cli.controller('test', {
   description: 'My super first command',
 })
 export class TestCommand implements Command {
   constructor(
-    protected config: Config['hello'],
-    protected prisma: PrismaClient,
-    protected logger: Logger,
+    private config: Config['hello'],
+    private edgedb: EdgedbClient,
+    private logger: Logger,
   ) {}
 
   async execute(
@@ -22,7 +22,11 @@ export class TestCommand implements Command {
     // https://deepkit.io/documentation/framework/cli
     @flag year?: number & Positive,
   ): Promise<void> {
-    const users = await this.prisma.user.findMany()
+    const users = await e
+      .select(e.User, (_u) => ({
+        ...e.User['*'],
+      }))
+      .run(this.edgedb)
     this.logger.log('Existing users:')
     users.forEach((u) => this.logger.log(u))
 

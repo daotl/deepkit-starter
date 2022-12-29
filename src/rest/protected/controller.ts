@@ -1,16 +1,17 @@
 import { http } from '@deepkit/http'
-import { PrismaClient, User } from '@prisma/client'
 
 import { AutenticatedUserParameterResolver, authGroup } from '~/auth'
+import { EdgedbClient } from '~/edgedb'
+import { User } from '~/models'
 
 @http
   .controller()
   .resolveParameterByName('user', AutenticatedUserParameterResolver)
 export class ProtectedController {
-  constructor(protected prisma: PrismaClient) {}
+  constructor(private edgedb: EdgedbClient) {}
 
   @http.GET('/api/protected').use(authGroup('protected'))
   protected(user: User): string {
-    return `hi ${user.name as string}`
+    return `hi ${user.name}`
   }
 }

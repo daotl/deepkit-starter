@@ -1,2 +1,2 @@
 #!/bin/sh
-mkdir -p ~/dev/docker-volumes/deepkit-starter/postgres
+mkdir -p ~/dev/docker-volumes/deepkit-starter/edgedb

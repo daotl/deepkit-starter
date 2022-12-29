@@ -2,12 +2,13 @@ import util from 'node:util'
 
 import { http, HttpRequest, HttpResponse } from '@deepkit/http'
 import { Logger } from '@deepkit/logger'
-import { type User, PrismaClient } from '@prisma/client'
 import { AnyRouter } from '@trpc/server'
 import { createExpressMiddleware } from '@trpc/server/adapters/express'
 import { expressHandler } from 'trpc-playground/handlers/express'
 
 import { AutenticatedUserParameterResolver, authGroup } from '~/auth'
+import { EdgedbClient } from '~/edgedb'
+import { type User } from '~/models'
 
 import { TrpcConfig } from './config'
 import { genCreateContext } from './context'
@@ -25,7 +26,7 @@ export class TrpcController {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private playgroundHandler: (req: any, res: any) => Promise<void> = noop
 
-  constructor(private logger: Logger, private prisma: PrismaClient) {
+  constructor(private logger: Logger, private edgedb: EdgedbClient) {
     this.router = createRouter()
   }
 
@@ -62,7 +63,7 @@ export class TrpcController {
       this.handler = util.promisify(
         createExpressMiddleware({
           router: this.router,
-          createContext: genCreateContext(this.prisma),
+          createContext: genCreateContext(this.edgedb),
         }),
       )
 
