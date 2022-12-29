@@ -25,7 +25,9 @@ module default {
   }
 
   type Post extending Base {
-    required property title -> str;
+    required property title -> str {
+      constraint exclusive;
+    }
     required property content -> str;
     required property published -> bool {
       default := false;

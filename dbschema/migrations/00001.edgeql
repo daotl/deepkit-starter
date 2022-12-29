@@ -1,4 +1,4 @@
-CREATE MIGRATION m1hkro5yvt5g5ij5q5poz7dpxkedhxr22fe6li6e25yxwettbuajra
+CREATE MIGRATION m1rt6tln7uk5x5vedl4yeugo2sbv6clu6dc6gcfua24wyzbl6nhhxq
     ONTO initial
 {
   CREATE FUTURE nonrecursive_access_policies;
@@ -12,7 +12,9 @@ CREATE MIGRATION m1hkro5yvt5g5ij5q5poz7dpxkedhxr22fe6li6e25yxwettbuajra
   };
   CREATE TYPE default::Post EXTENDING default::Base {
       CREATE MULTI LINK categories -> default::Category;
-      CREATE REQUIRED PROPERTY title -> std::str;
+      CREATE REQUIRED PROPERTY title -> std::str {
+          CREATE CONSTRAINT std::exclusive;
+      };
       CREATE INDEX ON (.title);
       CREATE REQUIRED PROPERTY content -> std::str;
       CREATE REQUIRED PROPERTY published -> std::bool {
