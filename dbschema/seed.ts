@@ -4,15 +4,16 @@ import { createClient } from 'edgedb'
 import { omit } from 'rambdax/immutable'
 
 import { AuthConfig } from '~/auth'
-import { e, EU } from '~/edgedb'
+import { e, EdgedbUtil } from '~/edgedb'
 
 const client = createClient().withConfig({
   allow_user_specified_id: true,
 })
 
 async function main(): Promise<void> {
+  const eu = new EdgedbUtil(client)
   const users = await Promise.all([
-    EU.upsert(
+    eu.upsert(
       e.User,
       e.User.email,
       {
@@ -22,11 +23,11 @@ async function main(): Promise<void> {
       },
       omit('id'),
     ),
-    EU.upsert(e.User, e.User.email, {
+    eu.upsert(e.User, e.User.email, {
       email: 'john@daot.io',
       name: 'John',
     }),
-    EU.upsert(e.User, e.User.email, {
+    eu.upsert(e.User, e.User.email, {
       email: 'marie@daot.io',
       name: 'Marie',
     }),
@@ -55,11 +56,10 @@ async function main(): Promise<void> {
   ] as const
 
   await Promise.all([
-    ...users,
     ...posts.map((p) =>
       // FIXME: Update author also. Currently if we don't omit `author`, there's an error:
       //   Error: Cannot extract repeated or aliased expression into 'WITH' block, expression or its aliases appear outside root scope
-      EU.upsert(e.Post, e.Post.title, p, omit('author')).run(client),
+      eu.upsertRun(e.Post, e.Post.title, p, omit<typeof p>('author')),
     ),
   ])
 }

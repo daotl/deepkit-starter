@@ -54,6 +54,7 @@ specifiers:
   ts-node: ^10.9.1
   ts-node-dev: ^2.0.0
   tslib: ^2.4.1
+  type-fest: ^3.5.0
   typescript: ^4.8.4
   zod: ^3.20.2
 
@@ -111,6 +112,7 @@ devDependencies:
   rimraf: 3.0.2
   ts-node: 10.9.1_vqcafhj4xvr2nzknlrdklk55zm
   ts-node-dev: 2.0.0_vqcafhj4xvr2nzknlrdklk55zm
+  type-fest: 3.5.0
   typescript: 4.8.4
 
 packages:
@@ -5434,6 +5436,11 @@ packages:
   /type-fest/0.8.1:
     resolution: {integrity: sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==}
     engines: {node: '>=8'}
+    dev: true
+
+  /type-fest/3.5.0:
+    resolution: {integrity: sha512-bI3zRmZC8K0tUz1HjbIOAGQwR2CoPQG68N5IF7gm0LBl8QSNXzkmaWnkWccCUL5uG9mCsp4sBwC8SBrNSISWew==}
+    engines: {node: '>=14.16'}
     dev: true
 
   /typescript/4.8.4:
