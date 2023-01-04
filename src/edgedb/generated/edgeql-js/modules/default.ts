@@ -8,7 +8,7 @@ export type $Role = {
   "user": $.$expr_Literal<$Role>;
   "admin": $.$expr_Literal<$Role>;
 } & $.EnumType<"default::Role", ["user", "admin"]>;
-const Role: $Role = $.makeType<$Role>(_.spec, "351e0c3a-8694-11ed-b62c-0b39bcb50927", _.syntax.literal);
+const Role: $Role = $.makeType<$Role>(_.spec, "98eef348-87e3-11ed-ac29-09dd8fe105a1", _.syntax.literal);
 
 export type $BaseλShape = $.typeutil.flatten<_std.$Object_a95265547ccd11edaf577b7152587f02λShape & {
   "createdAt": $.PropertyDesc<_std.$datetime, $.Cardinality.One, false, false, false, true>;
@@ -16,7 +16,7 @@ export type $BaseλShape = $.typeutil.flatten<_std.$Object_a95265547ccd11edaf577
 type $Base = $.ObjectType<"default::Base", $BaseλShape, null, [
   ..._std.$Object_a95265547ccd11edaf577b7152587f02['__exclusives__'],
 ]>;
-const $Base = $.makeType<$Base>(_.spec, "35162b59-8694-11ed-8438-1bcfc620fd46", _.syntax.literal);
+const $Base = $.makeType<$Base>(_.spec, "98e5b436-87e3-11ed-bedc-9134f25d453a", _.syntax.literal);
 
 const Base: $.$expr_PathNode<$.TypeSet<$Base, $.Cardinality.Many>, null> = _.syntax.$PathNode($.$toSet($Base, $.Cardinality.Many), null);
 
@@ -29,14 +29,14 @@ export type $CategoryλShape = $.typeutil.flatten<$BaseλShape & {
 type $Category = $.ObjectType<"default::Category", $CategoryλShape, null, [
   ...$Base['__exclusives__'],
 ]>;
-const $Category = $.makeType<$Category>(_.spec, "35180193-8694-11ed-a2cc-a10ee4f7ec5e", _.syntax.literal);
+const $Category = $.makeType<$Category>(_.spec, "98e7e802-87e3-11ed-97c1-c1963c7dee02", _.syntax.literal);
 
 const Category: $.$expr_PathNode<$.TypeSet<$Category, $.Cardinality.Many>, null> = _.syntax.$PathNode($.$toSet($Category, $.Cardinality.Many), null);
 
 export type $PostλShape = $.typeutil.flatten<$BaseλShape & {
   "categories": $.LinkDesc<$Category, $.Cardinality.Many, {}, false, false,  false, false>;
   "author": $.LinkDesc<$User, $.Cardinality.One, {}, false, false,  false, false>;
-  "title": $.PropertyDesc<_std.$str, $.Cardinality.One, false, false, false, false>;
+  "title": $.PropertyDesc<_std.$str, $.Cardinality.One, true, false, false, false>;
   "content": $.PropertyDesc<_std.$str, $.Cardinality.One, false, false, false, false>;
   "published": $.PropertyDesc<_std.$bool, $.Cardinality.One, false, false, false, true>;
   "<posts[is Category]": $.LinkDesc<$Category, $.Cardinality.Many, {}, false, false,  false, false>;
@@ -45,8 +45,9 @@ export type $PostλShape = $.typeutil.flatten<$BaseλShape & {
 }>;
 type $Post = $.ObjectType<"default::Post", $PostλShape, null, [
   ...$Base['__exclusives__'],
+  {title: {__element__: _std.$str, __cardinality__: $.Cardinality.One | $.Cardinality.AtMostOne },},
 ]>;
-const $Post = $.makeType<$Post>(_.spec, "3519c25d-8694-11ed-804e-f10e3dfbf8a1", _.syntax.literal);
+const $Post = $.makeType<$Post>(_.spec, "98e9cfe0-87e3-11ed-b1e8-f10e8ca12b3f", _.syntax.literal);
 
 const Post: $.$expr_PathNode<$.TypeSet<$Post, $.Cardinality.Many>, null> = _.syntax.$PathNode($.$toSet($Post, $.Cardinality.Many), null);
 
@@ -59,7 +60,7 @@ export type $ProfileλShape = $.typeutil.flatten<$BaseλShape & {
 type $Profile = $.ObjectType<"default::Profile", $ProfileλShape, null, [
   ...$Base['__exclusives__'],
 ]>;
-const $Profile = $.makeType<$Profile>(_.spec, "351c6f9d-8694-11ed-bf1f-698e9f6d0cb9", _.syntax.literal);
+const $Profile = $.makeType<$Profile>(_.spec, "98ed26e9-87e3-11ed-940c-b14ff9b5f005", _.syntax.literal);
 
 const Profile: $.$expr_PathNode<$.TypeSet<$Profile, $.Cardinality.Many>, null> = _.syntax.$PathNode($.$toSet($Profile, $.Cardinality.Many), null);
 
@@ -78,7 +79,7 @@ type $User = $.ObjectType<"default::User", $UserλShape, null, [
   ...$Base['__exclusives__'],
   {email: {__element__: _std.$str, __cardinality__: $.Cardinality.One | $.Cardinality.AtMostOne },},
 ]>;
-const $User = $.makeType<$User>(_.spec, "351e3873-8694-11ed-a71f-53cf2cd330cb", _.syntax.literal);
+const $User = $.makeType<$User>(_.spec, "98ef0467-87e3-11ed-8538-bb5e489d9719", _.syntax.literal);
 
 const User: $.$expr_PathNode<$.TypeSet<$User, $.Cardinality.Many>, null> = _.syntax.$PathNode($.$toSet($User, $.Cardinality.Many), null);
 
