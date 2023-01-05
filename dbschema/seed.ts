@@ -4,7 +4,8 @@ import { createClient } from 'edgedb'
 import { omit } from 'rambdax/immutable'
 
 import { AuthConfig } from '~/auth'
-import { e, EdgedbUtil } from '~/edgedb'
+import { type UpsertShape, e, EdgedbUtil } from '~/edgedb'
+import * as E from '~/edgedb'
 
 const client = createClient().withConfig({
   allow_user_specified_id: true,
@@ -12,8 +13,35 @@ const client = createClient().withConfig({
 
 async function main(): Promise<void> {
   const eu = new EdgedbUtil(client)
+  // Examples:
+  // const ex1 = await eu.insertSelect(
+  //   e.User,
+  //   { name: '', email: '' },
+  //   // { name: true, email: true },
+  // )
+  // const ex2 = await eu.updateSelect(
+  //   e.User,
+  //   () => ({ set: { name: '', email: '' } }),
+  //   // { name: true, email: true },
+  // )
+  // const ex3 = await eu.updateSelect(
+  //   e.User,
+  //   () => ({ filter_single: { email: '' }, set: { name: '', email: '' } }),
+  //   // { name: true, email: true },
+  // )
+  // const ex4 = await eu.upsertSelect(
+  //   e.User,
+  //   e.User.email,
+  //   {
+  //     email: 'nex@daot.io',
+  //     name: 'Nex',
+  //   },
+  //   identity,
+  //   // { name: true, email: true },
+  // )
+
   const users = await Promise.all([
-    eu.upsert(
+    E.upsert(
       e.User,
       e.User.email,
       {
@@ -21,13 +49,13 @@ async function main(): Promise<void> {
         email: 'nex@daot.io',
         name: 'Nex',
       },
-      omit('id'),
+      omit<UpsertShape<typeof e.User>>('id'),
     ),
-    eu.upsert(e.User, e.User.email, {
+    E.upsert(e.User, e.User.email, {
       email: 'john@daot.io',
       name: 'John',
     }),
-    eu.upsert(e.User, e.User.email, {
+    E.upsert(e.User, e.User.email, {
       email: 'marie@daot.io',
       name: 'Marie',
     }),
@@ -59,7 +87,7 @@ async function main(): Promise<void> {
     ...posts.map((p) =>
       // FIXME: Update author also. Currently if we don't omit `author`, there's an error:
       //   Error: Cannot extract repeated or aliased expression into 'WITH' block, expression or its aliases appear outside root scope
-      eu.upsertRun(e.Post, e.Post.title, p, omit<typeof p>('author')),
+      eu.upsert(e.Post, e.Post.title, p, omit<typeof p>('author')),
     ),
   ])
 }
