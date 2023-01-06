@@ -24,7 +24,7 @@
     "edgedb:migration:create": "docker exec deepkit-starter-edgedb-1 edgedb -I deepkit_starter migration create",
     "edgedb:migrate": "docker exec deepkit-starter-edgedb-1 edgedb -I deepkit_starter migrate",
     "edgedb:gen": "concurrently 'pnpm edgedb:gen:interfaces' 'pnpm edgedb:gen:edgeql-js' 'pnpm edgedb:gen:zod'",
-    "edgedb:gen:interfaces": "dotenv -- npx @edgedb/generate interfaces --force-overwrite --file src/models/generated/interfaces.ts",
+    "edgedb:gen:interfaces": "dotenv -- npx @edgedb/generate interfaces --force-overwrite --file src/models/generated/interfaces.ts && npx ts-to-zod --config=edgedb --skipValidation",
     "edgedb:gen:edgeql-js": "mkdir -p src/edgedb/generated/edgeql-js && dotenv -- npx @edgedb/generate edgeql-js --target cjs --force-overwrite --out src/edgedb/generated/edgeql-js",
     "edgedb:gen:zod": "dotenv -- npx edgedb-zod --outputDir src/models/generated/zod",
     "edgedb:seed": "dotenv ts-node dbschema/seed.ts",
@@ -93,6 +93,7 @@
     "rimraf": "^3.0.2",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
+    "ts-to-zod": "daotl/ts-to-zod#3389db26b282ee08856c36d0c1db28ee70365227",
     "type-fest": "^3.5.0",
     "typescript": "^4.8.4"
   },

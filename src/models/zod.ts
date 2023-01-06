@@ -14,13 +14,14 @@ import {
   CreatePostSchema,
   CreateProfileSchema,
   CreateUserSchema,
-  RoleSchema,
   UpdateBaseSchema,
   UpdateCategorySchema,
   UpdatePostSchema,
   UpdateProfileSchema,
   UpdateUserSchema,
 } from './generated/zod'
+
+export * from './generated/interfaces.zod'
 
 const patchModelOmitMask = { createdAt: true } as const
 
@@ -42,9 +43,6 @@ const patchModelSchema = <
   UnknownKeys,
   Catchall
 > => s.omit(patchModelOmitMask)
-
-// Enums
-export const roleSchema = RoleSchema
 
 // Create/Update DTOs
 export const createBaseSchema = patchModelSchema(CreateBaseSchema)
