@@ -25,7 +25,7 @@
     "edgedb:migrate": "docker exec deepkit-starter-edgedb-1 edgedb -I deepkit_starter migrate",
     "edgedb:gen": "concurrently 'pnpm edgedb:gen:interfaces' 'pnpm edgedb:gen:edgeql-js' 'pnpm edgedb:gen:zod'",
     "edgedb:gen:interfaces": "dotenv -- npx @edgedb/generate interfaces --force-overwrite --file src/models/generated/interfaces.ts",
-    "edgedb:gen:edgeql-js": "dotenv -- npx @edgedb/generate edgeql-js --target cjs --force-overwrite --out src/edgedb/generated/edgeql-js",
+    "edgedb:gen:edgeql-js": "mkdir -p src/edgedb/generated/edgeql-js && dotenv -- npx @edgedb/generate edgeql-js --target cjs --force-overwrite --out src/edgedb/generated/edgeql-js",
     "edgedb:gen:zod": "dotenv -- npx edgedb-zod --outputDir src/models/generated/zod",
     "edgedb:seed": "dotenv ts-node dbschema/seed.ts",
     "prepare": "deepkit-type-install",
@@ -68,7 +68,8 @@
     "superjson": "^1.12.1",
     "tlru": "^1.0.2",
     "trpc-playground": "1.0.1",
-    "tslib": "^2.4.1"
+    "tslib": "^2.4.1",
+    "zod": "^3.20.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.3.0",
@@ -93,8 +94,7 @@
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
     "type-fest": "^3.5.0",
-    "typescript": "^4.8.4",
-    "zod": "^3.20.2"
+    "typescript": "^4.8.4"
   },
   "pnpm": {
     "overrides": {
