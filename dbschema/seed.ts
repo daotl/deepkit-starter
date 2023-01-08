@@ -39,6 +39,11 @@ async function main(): Promise<void> {
   //   identity,
   //   // { name: true, email: true },
   // )
+  // const ex5 = await eu.selectCount(e.User, () => ({
+  //   offset: 100,
+  //   limit: 10,
+  //   ...e.User['*'],
+  // }))
 
   const users = await Promise.all([
     E.upsert(

@@ -1,5 +1,5 @@
 import type { Cardinality } from 'edgedb/dist/reflection'
-import { identity } from 'rambdax/immutable'
+import { identity, omit } from 'rambdax/immutable'
 import type { Spread } from 'type-fest'
 
 import { type EdgedbClient, e } from '.'
@@ -9,11 +9,13 @@ import type {
   InsertShape,
 } from './generated/edgeql-js/insert'
 import type { $Object } from './generated/edgeql-js/modules/std'
-import type { $expr_PathNode } from './generated/edgeql-js/path'
+import type { $expr_PathNode, $linkPropify } from './generated/edgeql-js/path'
 import type {
   ComputeSelectCardinality,
   objectTypeToSelectShape,
+  SelectModifierNames,
   SelectModifiers,
+  UnknownSelectModifiers,
 } from './generated/edgeql-js/select'
 import type {
   $scopify,
@@ -22,6 +24,7 @@ import type {
   computeTsType,
   computeTsTypeCard,
   ObjectType,
+  ObjectTypeExpression,
   TypeSet,
 } from './generated/edgeql-js/typesystem'
 import type { $expr_Update, UpdateShape } from './generated/edgeql-js/update'
@@ -38,6 +41,30 @@ export type computeExtendedTsType<
 > = BaseType extends T
   ? unknown
   : computeTsTypeCard<Spread<Ext, BaseTypeToTsType<T>>, C>
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export const selectCount = <
+  Expr extends ObjectTypeExpression,
+  Shape extends objectTypeToSelectShape<Expr['__element__']> &
+    SelectModifiers<Expr['__element__']>,
+  Modifiers extends UnknownSelectModifiers = Pick<Shape, SelectModifierNames>,
+>(
+  expr: Expr,
+  shape: (
+    scope: $scopify<Expr['__element__']> &
+      $linkPropify<{
+        [k in keyof Expr]: k extends '__cardinality__'
+          ? Cardinality.One
+          : Expr[k]
+      }>,
+  ) => Readonly<Shape>,
+) => {
+  const q = e.select<Expr, Shape, Modifiers>(expr, shape)
+  return e.select({
+    count: e.count(omit(['offset', 'limit'], q)),
+    data: q,
+  })
+}
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const insertSelect = <
@@ -164,6 +191,24 @@ export const upsertSelect = <
 
 export class EdgedbUtil {
   constructor(private client: EdgedbClient) {}
+
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  selectCount = <
+    Expr extends ObjectTypeExpression,
+    Shape extends objectTypeToSelectShape<Expr['__element__']> &
+      SelectModifiers<Expr['__element__']>,
+    Modifiers extends UnknownSelectModifiers = Pick<Shape, SelectModifierNames>,
+  >(
+    expr: Expr,
+    shape: (
+      scope: $scopify<Expr['__element__']> &
+        $linkPropify<{
+          [k in keyof Expr]: k extends '__cardinality__'
+            ? Cardinality.One
+            : Expr[k]
+        }>,
+    ) => Readonly<Shape>,
+  ) => selectCount<Expr, Shape, Modifiers>(expr, shape).run(this.client)
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   insertSelect = <
