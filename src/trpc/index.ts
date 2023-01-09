@@ -1,5 +1,6 @@
 export * from './config'
 export * from './controller'
+export * from './crud'
 export * from './module'
 export * from './router'
 export * from './trpc'

@@ -3,6 +3,7 @@ import superjson from 'superjson'
 
 import { app } from '~/app'
 import { HelloRouter } from '~/hello'
+import { PostRouter } from '~/post'
 
 import { t } from './trpc'
 
@@ -11,6 +12,7 @@ export function createRouter() {
   return t.router({
     // List all the routers here
     hello: app.get<HelloRouter>().router(),
+    post: app.get<PostRouter>().router(),
   })
 }
 
