@@ -1,12 +1,9 @@
-import { Group } from '@deepkit/type'
 import { z } from 'zod'
 
 import { e, EdgedbClient } from '~/edgedb'
 import { p, t } from '~/trpc'
 
 export class Person {
-  private password: Group<'secret'> & string = 'secret'
-
   constructor(
     private name: string,
     private email: string,
@@ -26,7 +23,7 @@ export class HelloRouter {
 
   // @http.GET('/api/hello/:name').use(authGroup('public'))
   // @http.serialization({ groupsExclude: ['secret'] })
-  hello = p.protected
+  hello = p.public
     .input(
       z.object({
         name: z.string(),

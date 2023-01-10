@@ -6,6 +6,7 @@ import { type HttpContext } from '~/http'
 import type { User } from '~/models'
 
 import { type Context } from './context'
+import { permissions } from './permissions'
 
 export const t = initTRPC.context<Record<string, unknown> & Context>().create({
   transformer: superjson,
@@ -61,8 +62,12 @@ const checkAdminMiddleware = t.middleware(async ({ ctx, next }) => {
 })
 
 export const p = {
-  public: t.procedure.use(publicMiddleware),
-  optional: t.procedure.use(checkSignedInUserMiddleware(true)),
-  protected: t.procedure.use(checkSignedInUserMiddleware(false)),
-  admin: t.procedure.use(checkAdminMiddleware),
+  public: t.procedure.use(publicMiddleware).use(permissions()),
+  optional: t.procedure
+    .use(checkSignedInUserMiddleware(true))
+    .use(permissions()),
+  protected: t.procedure
+    .use(checkSignedInUserMiddleware(false))
+    .use(permissions()),
+  admin: t.procedure.use(checkAdminMiddleware).use(permissions()),
 }
