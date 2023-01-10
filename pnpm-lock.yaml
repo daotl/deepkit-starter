@@ -53,6 +53,7 @@ specifiers:
   superjson: ^1.12.1
   tlru: ^1.0.2
   trpc-playground: 1.0.4
+  trpc-shield: ^0.4.0
   ts-node: ^10.9.1
   ts-node-dev: ^2.0.0
   ts-to-zod: daotl/ts-to-zod#afd4d925111c1efcad2b33c9075f1d27de1eea76
@@ -92,6 +93,7 @@ dependencies:
   superjson: 1.12.1
   tlru: 1.0.2
   trpc-playground: 1.0.4_qbbkp3ceo54coyga7oo3kknsxi
+  trpc-shield: 0.4.0
   tslib: 2.4.1
   zod: 3.20.2
 
@@ -5352,6 +5354,12 @@ packages:
       - sugarss
       - terser
       - typescript
+    dev: false
+
+  /trpc-shield/0.4.0:
+    resolution: {integrity: sha512-QsimWm3K3i2WEvkggwuIir1pqkBB5lXnVqHgF8WgDWTPQ/W/iSkaYqbk9rP3ARI3kbPD6vfIDzwDli3dAPjY3A==}
+    dependencies:
+      '@trpc/server': 10.9.0
     dev: false
 
   /ts-essentials/9.3.0_typescript@4.8.4:
