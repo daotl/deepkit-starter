@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 import { e, EdgedbClient, EdgedbUtil } from '~/edgedb'
-import { zCreatePost, zUpdatePost } from '~/models/zod'
+import { createPostSchema, updatePostSchema } from '~/models/zod'
 import { p, t, zListInput } from '~/trpc'
 
 export class Person {
@@ -50,7 +50,7 @@ export class PostRouter {
       .run(this.edgedb),
   )
 
-  create = p.public.input(zCreatePost).mutation(async ({ input }) =>
+  create = p.public.input(createPostSchema).mutation(async ({ input }) =>
     e
       .insert(e.Post, {
         ...input,
@@ -61,7 +61,7 @@ export class PostRouter {
       .run(this.edgedb),
   )
 
-  update = p.public.input(zUpdatePost).mutation(async ({ input }) =>
+  update = p.public.input(updatePostSchema).mutation(async ({ input }) =>
     e
       .update(e.Post, () => ({
         set: input,
