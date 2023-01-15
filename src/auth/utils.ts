@@ -28,7 +28,7 @@ export class SessionParameterResolver {
   }
 }
 
-export class AutenticatedUserParameterResolver {
+export class AuthenticatedUserParameterResolver {
   resolve(context: RouteParameterResolverContext): User | Promise<User> {
     const user = extractUserFromRequest(context.request)
     if (!user) {

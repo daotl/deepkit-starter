@@ -6,7 +6,7 @@ import { AuthController } from './controller'
 import { AuthListener } from './listener'
 import { SessionCache, sessionCacheFactory } from './session'
 import {
-  AutenticatedUserParameterResolver,
+  AuthenticatedUserParameterResolver,
   SessionParameterResolver,
 } from './utils'
 
@@ -16,8 +16,8 @@ export class AuthModule extends createModule({
   controllers: [AuthController],
   providers: [
     { provide: SessionCache, useFactory: sessionCacheFactory },
-    { provide: AutenticatedUserParameterResolver, scope: 'http' },
+    { provide: AuthenticatedUserParameterResolver, scope: 'http' },
     { provide: SessionParameterResolver, scope: 'http' },
   ],
-  exports: [AutenticatedUserParameterResolver, SessionParameterResolver],
+  exports: [AuthenticatedUserParameterResolver, SessionParameterResolver],
 }) {}

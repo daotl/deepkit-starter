@@ -1,7 +1,7 @@
 import { http, HttpQuery, HttpResponse } from '@deepkit/http'
 import { Group } from '@deepkit/type'
 
-import { AutenticatedUserParameterResolver, authGroup } from '~/auth'
+import { AuthenticatedUserParameterResolver, authGroup } from '~/auth'
 import { e, EdgedbClient } from '~/edgedb'
 import { type User } from '~/models'
 
@@ -17,7 +17,7 @@ class Person {
 
 @http
   .controller()
-  .resolveParameterByName('user', AutenticatedUserParameterResolver)
+  .resolveParameterByName('user', AuthenticatedUserParameterResolver)
 export class HelloController {
   constructor(private edgedb: EdgedbClient) {}
 

@@ -6,7 +6,7 @@ import { AnyRouter } from '@trpc/server'
 import { createExpressMiddleware } from '@trpc/server/adapters/express'
 import { expressHandler } from 'trpc-playground/handlers/express'
 
-import { AutenticatedUserParameterResolver, authGroup } from '~/auth'
+import { AuthenticatedUserParameterResolver, authGroup } from '~/auth'
 import { EdgedbClient } from '~/edgedb'
 import { type User } from '~/models'
 
@@ -18,7 +18,7 @@ const noop = (): Promise<void> => Promise.resolve()
 
 @http
   .controller('/api')
-  .resolveParameterByName('user', AutenticatedUserParameterResolver)
+  .resolveParameterByName('user', AuthenticatedUserParameterResolver)
 export class TrpcController {
   private router: AnyRouter
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
