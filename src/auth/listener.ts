@@ -45,22 +45,26 @@ export class AuthListener {
     }
 
     // Mock authenticated user for developing
-    if (!mSession) {
-      mSession = { id: this.config.mockUserId }
-    }
-    const session: Session = mSession
+    // if (!mSession) {
+    //   mSession = { id: this.config.mockUserId }
+    // }
+    // const session: Session = mSession
 
-    const user = await e
-      .select(e.User, (_u) => ({
-        filter_single: { id: mSession!.id },
-        ...e.User['*'],
-      }))
-      .run(this.edgedb)
+    const user = mSession
+      ? await e
+          .select(e.User, (_u) => ({
+            filter_single: { id: mSession!.id },
+            ...e.User['*'],
+          }))
+          .run(this.edgedb)
+      : undefined
 
     // Not successfully signed-in
     if (!user) {
-      // Invalid session, remove it
-      this.sessionCache.delete(session.id)
+      if (mSession) {
+        // Invalid session, remove it
+        this.sessionCache.delete(mSession.id)
+      }
 
       // Deny if auth is not optional
       if (authGroup !== 'optional') {
@@ -68,6 +72,7 @@ export class AuthListener {
       }
       return
     }
+    const session: Session = mSession!
 
     // Signed-in, make sure all routes have the `User` object if they want
     // via AuthenticatedUserParameterResolver

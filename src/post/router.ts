@@ -25,7 +25,7 @@ export class PostRouter {
       delete: this.delete,
     })
 
-  list = p.public.input(zListInput).query(({ input }) =>
+  list = p.optional.input(zListInput).query(({ input }) =>
     e
       .select(e.Post, (_p) => ({
         ...input,
@@ -34,14 +34,14 @@ export class PostRouter {
       .run(this.edgedb),
   )
 
-  listWithCount = p.public.input(zListInput).query(({ input }) => ({
+  listWithCount = p.optional.input(zListInput).query(({ input }) => ({
     data: this.eu.selectCount(e.Post, (_p) => ({
       ...input,
       ...e.Post['*'],
     })),
   }))
 
-  get = p.public.input(z.string().uuid()).query(({ input: id }) =>
+  get = p.optional.input(z.string().uuid()).query(({ input: id }) =>
     e
       .select(e.Post, (p) => ({
         filter_single: e.op(p.id, '=', e.cast(e.uuid, id)),
@@ -50,7 +50,7 @@ export class PostRouter {
       .run(this.edgedb),
   )
 
-  create = p.public.input(createPostSchema).mutation(async ({ input }) =>
+  create = p.optional.input(createPostSchema).mutation(async ({ input }) =>
     e
       .insert(e.Post, {
         ...input,
@@ -61,7 +61,7 @@ export class PostRouter {
       .run(this.edgedb),
   )
 
-  update = p.public.input(updatePostSchema).mutation(async ({ input }) =>
+  update = p.optional.input(updatePostSchema).mutation(async ({ input }) =>
     e
       .update(e.Post, () => ({
         set: input,
@@ -69,7 +69,7 @@ export class PostRouter {
       .run(this.edgedb),
   )
 
-  delete = p.public.input(z.string().uuid()).mutation(async ({ input: id }) =>
+  delete = p.optional.input(z.string().uuid()).mutation(async ({ input: id }) =>
     e
       .delete(e.Post, (p) => ({
         filter_single: e.op(p.id, '=', e.cast(e.uuid, id)),

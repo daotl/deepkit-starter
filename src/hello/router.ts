@@ -23,7 +23,7 @@ export class HelloRouter {
 
   // @http.GET('/api/hello/:name').use(authGroup('public'))
   // @http.serialization({ groupsExclude: ['secret'] })
-  hello = p.public
+  hello = p.optional
     .input(
       z.object({
         name: z.string(),
@@ -43,7 +43,7 @@ export class HelloRouter {
     })
 
   // @http.GET('/api/protected').use(authGroup('protected'))
-  protected = p.protected.query(
+  protected = p.optional.query(
     ({ ctx: { user } }) => `Hi ${user?.name ?? ('anonymous' as string)}`,
   )
 }

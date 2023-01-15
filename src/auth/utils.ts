@@ -19,8 +19,8 @@ export function extractUserFromRequest(req: HttpRequest): User | undefined {
 }
 
 export class SessionParameterResolver {
-  resolve(context: RouteParameterResolverContext): Session | Promise<Session> {
-    const session = extractSessionFromRequest(context.request)
+  resolve(ctx: RouteParameterResolverContext): Session | Promise<Session> {
+    const session = extractSessionFromRequest(ctx.request)
     if (!session) {
       throw new Error('No session loaded')
     }
@@ -29,9 +29,16 @@ export class SessionParameterResolver {
 }
 
 export class AuthenticatedUserParameterResolver {
-  resolve(context: RouteParameterResolverContext): User | Promise<User> {
-    const user = extractUserFromRequest(context.request)
-    if (!user) {
+  resolve(
+    ctx: RouteParameterResolverContext,
+  ): User | undefined | Promise<User | undefined> {
+    const user = extractUserFromRequest(ctx.request)
+    if (
+      !user &&
+      !['public', 'optional'].includes(
+        ctx.route.data.get('authGroup') as string,
+      )
+    ) {
       throw new Error('No user loaded')
     }
     return user

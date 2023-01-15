@@ -10,17 +10,27 @@ const isAuthenticated = <Ctx extends Context>() =>
     // eslint-disable-next-line no-console, @typescript-eslint/no-non-null-asserted-optional-chain
     console.log(`user: ${ctx.user?.name!}`)
 
-    return ctx.user !== null
+    return !!ctx.user
   })
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const permissions = <Ctx extends Context>() =>
   shield<Ctx>({
-    // trpc-shield does not support nested routers yet:
-    // https://github.com/omar-dulaimi/trpc-shield/issues/8
-    query: {
-      hello: allow,
-      protected: isAuthenticated<Ctx>(),
+    hello: {
+      query: {
+        hello: allow,
+        protected: isAuthenticated<Ctx>(),
+      },
     },
-    mutation: {},
+    post: {
+      query: {
+        list: allow,
+        get: isAuthenticated<Ctx>(),
+      },
+      mutation: {
+        create: isAuthenticated<Ctx>(),
+        update: isAuthenticated<Ctx>(),
+        delete: isAuthenticated<Ctx>(),
+      },
+    },
   })
