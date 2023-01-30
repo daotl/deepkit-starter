@@ -14,7 +14,7 @@ export type ModelR = CategoryR | PostR | ProfileR | RoleR | UserR
 
 export type OmitModelRelation<MR extends ModelR> = ConditionalExcept<
   MR,
-  ModelR | ModelR[]
+  ModelR | ModelR[] | null | undefined
 >
 
 export type Category = OmitModelRelation<CategoryR>
