@@ -12,15 +12,15 @@ export * from './generated/interfaces'
 
 export type ModelR = CategoryR | PostR | ProfileR | RoleR | UserR
 
-export type OmitModelRelation<MR extends ModelR> = ConditionalExcept<
+export type OmitModelRelations<MR extends ModelR> = ConditionalExcept<
   MR,
   ModelR | ModelR[] | null | undefined
 >
 
-export type Category = OmitModelRelation<CategoryR>
-export type Post = OmitModelRelation<PostR>
-export type Profile = OmitModelRelation<ProfileR>
-export type Role = OmitModelRelation<RoleR>
-export type User = OmitModelRelation<UserR>
+export type Category = OmitModelRelations<CategoryR>
+export type Post = OmitModelRelations<PostR>
+export type Profile = OmitModelRelations<ProfileR>
+export type Role = OmitModelRelations<RoleR>
+export type User = OmitModelRelations<UserR>
 
 export { CategoryR, PostR, ProfileR, RoleR, UserR }
