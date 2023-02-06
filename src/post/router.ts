@@ -17,12 +17,24 @@ export class PostRouter {
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   router = () =>
     t.router({
+      count: this.count,
+      listWithCount: this.listWithCount,
       list: this.list,
       get: this.get,
       create: this.create,
       update: this.update,
       delete: this.delete,
     })
+
+  count = p.optional.input(zListInput).query(({ input }) =>
+    e
+      .count(
+        e.select(e.Post, (_p) => ({
+          ...input,
+        })),
+      )
+      .run(this.edgedb),
+  )
 
   list = p.optional.input(zListInput).query(({ input }) =>
     e
