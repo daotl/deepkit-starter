@@ -3,14 +3,6 @@ import * as E from '~/edgedb'
 import { createPostSchema, updatePostSchema } from '~/models/zod'
 import { p, t, zIdInput, zListInput } from '~/trpc'
 
-export class Person {
-  constructor(
-    private name: string,
-    private email: string,
-    private motto: string,
-  ) {}
-}
-
 export class PostRouter {
   constructor(private edgedb: EdgedbClient) {}
 
