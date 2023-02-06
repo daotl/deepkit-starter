@@ -4,7 +4,7 @@ import { createClient } from 'edgedb'
 import { omit } from 'rambdax/immutable'
 
 import { AuthConfig } from '~/auth'
-import { type UpsertShape, e, EdgedbUtil } from '~/edgedb'
+import { type UpsertShape, e } from '~/edgedb'
 import * as E from '~/edgedb'
 
 const client = createClient().withConfig({
@@ -12,24 +12,24 @@ const client = createClient().withConfig({
 })
 
 async function main(): Promise<void> {
-  const eu = new EdgedbUtil(client)
+  // const eu = new EdgedbUtil(client)
   // Examples:
-  // const ex1 = await eu.insertSelect(
+  // const ex1 = await E.insertSelect(
   //   e.User,
   //   { name: '', email: '' },
   //   // { name: true, email: true },
-  // )
-  // const ex2 = await eu.updateSelect(
+  // ).run()
+  // const ex2 = await E.updateSelect(
   //   e.User,
   //   () => ({ set: { name: '', email: '' } }),
   //   // { name: true, email: true },
-  // )
-  // const ex3 = await eu.updateSelect(
+  // ).run()
+  // const ex3 = await E.updateSelect(
   //   e.User,
   //   () => ({ filter_single: { email: '' }, set: { name: '', email: '' } }),
   //   // { name: true, email: true },
-  // )
-  // const ex4 = await eu.upsertSelect(
+  // ).run()
+  // const ex4 = await E.upsertSelect(
   //   e.User,
   //   e.User.email,
   //   {
@@ -38,12 +38,12 @@ async function main(): Promise<void> {
   //   },
   //   identity,
   //   // { name: true, email: true },
-  // )
-  // const ex5 = await eu.selectCount(e.User, () => ({
+  // ).run()
+  // const ex5 = await E.selectCount(e.User, () => ({
   //   offset: 100,
   //   limit: 10,
   //   ...e.User['*'],
-  // }))
+  // })).run()
 
   const users = await Promise.all([
     E.upsert(
@@ -92,7 +92,7 @@ async function main(): Promise<void> {
     ...posts.map((p) =>
       // FIXME: Update author also. Currently if we don't omit `author`, there's an error:
       //   Error: Cannot extract repeated or aliased expression into 'WITH' block, expression or its aliases appear outside root scope
-      eu.upsert(e.Post, e.Post.title, p, omit<typeof p>('author')),
+      E.upsert(e.Post, e.Post.title, p, omit<typeof p>('author')).run(client),
     ),
   ])
 }

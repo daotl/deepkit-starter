@@ -22,14 +22,14 @@ import * as e from 'edgedb'
 import { AuthModule } from '~/auth'
 import { TestCommand } from '~/cli'
 import { Config } from '~/config'
-import { EdgedbClient, EdgedbUtil } from '~/edgedb'
+import { EdgedbClient /* , EdgedbUtil */ } from '~/edgedb'
 import { HelloModule } from '~/hello'
 import { PostModule } from '~/post'
 import { HelloController, ProtectedController, SseController } from '~/rest'
 import { TrpcModule } from '~/trpc'
 
 const edgedbClient = e.createClient()
-const edgedbUtil = new EdgedbUtil(edgedbClient)
+// const edgedbUtil = new EdgedbUtil(edgedbClient)
 
 class ServerListener {
   constructor(private logger: Logger) {}
@@ -108,7 +108,7 @@ export const app = new App({
   listeners: [ServerListener],
   providers: [
     { provide: EdgedbClient, useValue: edgedbClient },
-    { provide: EdgedbUtil, useValue: edgedbUtil },
+    // { provide: EdgedbUtil, useValue: edgedbUtil },
   ],
 })
   .loadConfigFromEnv({ envFilePath: ['.env.local', '.env'] })

@@ -1,8 +1,7 @@
-import { z } from 'zod'
-
-import { e, EdgedbClient, EdgedbUtil } from '~/edgedb'
+import { e, EdgedbClient } from '~/edgedb'
+import * as E from '~/edgedb'
 import { createPostSchema, updatePostSchema } from '~/models/zod'
-import { p, t, zListInput } from '~/trpc'
+import { p, t, zIdInput, zListInput } from '~/trpc'
 
 export class Person {
   constructor(
@@ -13,7 +12,7 @@ export class Person {
 }
 
 export class PostRouter {
-  constructor(private edgedb: EdgedbClient, private eu: EdgedbUtil) {}
+  constructor(private edgedb: EdgedbClient) {}
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   router = () =>
@@ -35,13 +34,13 @@ export class PostRouter {
   )
 
   listWithCount = p.optional.input(zListInput).query(({ input }) => ({
-    data: this.eu.selectCount(e.Post, (_p) => ({
+    data: E.selectCount(e.Post, (_p) => ({
       ...input,
       ...e.Post['*'],
-    })),
+    })).run(this.edgedb),
   }))
 
-  get = p.optional.input(z.string().uuid()).query(({ input: id }) =>
+  get = p.optional.input(zIdInput).query(({ input: { id } }) =>
     e
       .select(e.Post, (p) => ({
         filter_single: e.op(p.id, '=', e.cast(e.uuid, id)),
@@ -69,7 +68,7 @@ export class PostRouter {
       .run(this.edgedb),
   )
 
-  delete = p.optional.input(z.string().uuid()).mutation(async ({ input: id }) =>
+  delete = p.optional.input(zIdInput).mutation(async ({ input: { id } }) =>
     e
       .delete(e.Post, (p) => ({
         filter_single: e.op(p.id, '=', e.cast(e.uuid, id)),
