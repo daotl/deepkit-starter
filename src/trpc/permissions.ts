@@ -24,7 +24,9 @@ export const permissions = <Ctx extends Context>() =>
     },
     post: {
       query: {
+        count: allow,
         list: allow,
+        listWithTotal: allow,
         get: isAuthenticated<Ctx>(),
       },
       mutation: {

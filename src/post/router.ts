@@ -10,8 +10,8 @@ export class PostRouter {
   router = () =>
     t.router({
       count: this.count,
-      listWithCount: this.listWithTotal,
       list: this.list,
+      listWithTotal: this.listWithTotal,
       get: this.get,
       create: this.create,
       update: this.update,
