@@ -18,7 +18,7 @@ export class PostRouter {
   router = () =>
     t.router({
       count: this.count,
-      listWithCount: this.listWithCount,
+      listWithCount: this.listWithTotal,
       list: this.list,
       get: this.get,
       create: this.create,
@@ -45,8 +45,8 @@ export class PostRouter {
       .run(this.edgedb),
   )
 
-  listWithCount = p.optional.input(zListInput).query(({ input }) => ({
-    data: E.selectCount(e.Post, (_p) => ({
+  listWithTotal = p.optional.input(zListInput).query(({ input }) => ({
+    data: E.selectWithTotal(e.Post, (_p) => ({
       ...input,
       ...e.Post['*'],
     })).run(this.edgedb),

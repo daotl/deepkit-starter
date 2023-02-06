@@ -43,10 +43,22 @@ export type computeExtendedTsType<
   : computeTsTypeCard<Spread<Ext, BaseTypeToTsType<T>>, C>
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export const selectCount = <
+export const selectWithTotal = <
+  /**
+   * The selector to count.
+   */
   Expr extends ObjectTypeExpression,
+  /**
+   * The shape of the select statement.
+   */
   Shape extends objectTypeToSelectShape<Expr['__element__']> &
     SelectModifiers<Expr['__element__']>,
+  /**
+   * The modifiers that can be applied to the select statement.
+   *
+   * @remarks
+   * By default, this is any modifier that is not offset or limit.
+   */
   Modifiers extends UnknownSelectModifiers = Pick<Shape, SelectModifierNames>,
 >(
   expr: Expr,
@@ -59,10 +71,11 @@ export const selectCount = <
       }>,
   ) => Readonly<Shape>,
 ) => {
-  const q = e.select<Expr, Shape, Modifiers>(expr, shape)
   return e.select({
-    count: e.count(omit(['offset', 'limit'], q)),
-    data: q,
+    total: e.count(
+      e.select<Expr, Shape, Modifiers>(expr, omit(['offset', 'limit'], shape)),
+    ),
+    data: e.select<Expr, Shape, Modifiers>(expr, shape),
   })
 }
 
@@ -193,7 +206,7 @@ export const upsertSelect = <
 //   constructor(private client: EdgedbClient) {}
 
 //   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-//   selectCount = <
+//   selectWithTotal = <
 //     Expr extends ObjectTypeExpression,
 //     Shape extends objectTypeToSelectShape<Expr['__element__']> &
 //       SelectModifiers<Expr['__element__']>,
@@ -208,7 +221,7 @@ export const upsertSelect = <
 //             : Expr[k]
 //         }>,
 //     ) => Readonly<Shape>,
-//   ) => selectCount<Expr, Shape, Modifiers>(expr, shape).run(this.client)
+//   ) => selectWithTotal<Expr, Shape, Modifiers>(expr, shape).run(this.client)
 
 //   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 //   insertSelect = <
