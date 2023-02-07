@@ -21,6 +21,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
     "edgedb:migration:create": "docker exec deepkit-starter-edgedb-1 edgedb -I deepkit_starter migration create",
     "edgedb:migrate": "docker exec deepkit-starter-edgedb-1 edgedb -I deepkit_starter migrate",
     "edgedb:gen": "concurrently 'pnpm edgedb:gen:interfaces' 'pnpm edgedb:gen:edgeql-js' 'pnpm edgedb:gen:zod'",

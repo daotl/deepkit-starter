@@ -73,7 +73,10 @@ export const selectWithTotal = <
 ) => {
   return e.select({
     total: e.count(
-      e.select<Expr, Shape, Modifiers>(expr, omit(['offset', 'limit'], shape)),
+      e.select<Expr, Shape, Modifiers>(
+        expr,
+        (scope) => omit(['offset', 'limit'], shape(scope)) as Readonly<Shape>,
+      ),
     ),
     data: e.select<Expr, Shape, Modifiers>(expr, shape),
   })
