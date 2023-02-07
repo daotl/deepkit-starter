@@ -23,4 +23,14 @@ export type Profile = OmitModelRelations<ProfileR>
 export type Role = OmitModelRelations<RoleR>
 export type User = OmitModelRelations<UserR>
 
+export type Model = Category | Post | Profile | Role | User
+
+export type ModelMap = {
+  Category: Category
+  Post: Post
+  Profile: Profile
+  Role: Role
+  User: User
+}
+
 export { CategoryR, PostR, ProfileR, RoleR, UserR }

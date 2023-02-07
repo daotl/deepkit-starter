@@ -1,7 +1,11 @@
 import { e, EdgedbClient } from '~/edgedb'
 import * as E from '~/edgedb'
-import { zCreatePostInput, zUpdatePostInput } from '~/models/zod'
+import { zCreatePostInput, zPostFilter, zUpdatePostInput } from '~/models/zod'
 import { p, t, zIdInput, zListInput } from '~/trpc'
+
+export const zPostListInput = zListInput.extend({
+  filter: zPostFilter,
+})
 
 export class PostRouter {
   constructor(private edgedb: EdgedbClient) {}
@@ -18,28 +22,31 @@ export class PostRouter {
       delete: this.delete,
     })
 
-  count = p.optional.input(zListInput).query(({ input }) =>
+  count = p.optional.input(zPostListInput).query(({ input }) =>
     e
       .count(
         e.select(e.Post, (_p) => ({
           ...input,
+          filter: E.filterPropsEqual(e.Post, input.filter),
         })),
       )
       .run(this.edgedb),
   )
 
-  list = p.optional.input(zListInput).query(({ input }) =>
+  list = p.optional.input(zPostListInput).query(({ input }) =>
     e
       .select(e.Post, (_p) => ({
         ...input,
+        filter: E.filterPropsEqual(e.Post, input.filter),
         ...e.Post['*'],
       }))
       .run(this.edgedb),
   )
 
-  listWithTotal = p.optional.input(zListInput).query(({ input }) => ({
+  listWithTotal = p.optional.input(zPostListInput).query(({ input }) => ({
     data: E.selectWithTotal(e.Post, (_p) => ({
       ...input,
+      filter: E.filterPropsEqual(e.Post, input.filter),
       ...e.Post['*'],
     })).run(this.edgedb),
   }))

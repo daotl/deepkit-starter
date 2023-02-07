@@ -1,6 +1,8 @@
 import type { Cardinality } from 'edgedb/dist/reflection'
 import { identity, omit } from 'rambdax/immutable'
-import type { Spread } from 'type-fest'
+import type { Except, Spread } from 'type-fest'
+
+import type { ModelMap as ModelTypeMap } from '~/models'
 
 import { /* type EdgedbClient, */ e } from '.'
 import type {
@@ -8,11 +10,13 @@ import type {
   $expr_InsertUnlessConflict,
   InsertShape,
 } from './generated/edgeql-js/insert'
+import type models from './generated/edgeql-js/modules/default'
 // import type { $Object } from './generated/edgeql-js/modules/std'
 import type { $expr_PathNode, $linkPropify } from './generated/edgeql-js/path'
 import type {
   ComputeSelectCardinality,
   objectTypeToSelectShape,
+  SelectFilterExpression,
   SelectModifierNames,
   SelectModifiers,
   UnknownSelectModifiers,
@@ -28,6 +32,19 @@ import type {
   TypeSet,
 } from './generated/edgeql-js/typesystem'
 import type { $expr_Update, UpdateShape } from './generated/edgeql-js/update'
+
+export type ModelMap = Except<typeof models, 'Base'>
+export type Model = ModelMap[keyof ModelMap]
+
+export const filterPropsEqual = <
+  K extends keyof ModelMap,
+  M extends ModelMap[K],
+>(
+  m: M,
+  filter: Partial<ModelTypeMap[K]>,
+): SelectFilterExpression =>
+  // @ts-expect-error ignore
+  e.set(Object.entries(filter).map(([k, v]) => e.op(m[k], '=', v)))
 
 export type UpsertShape<Root extends $expr_PathNode> = InsertShape<
   Root['__element__']

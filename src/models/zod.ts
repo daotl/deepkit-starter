@@ -44,22 +44,22 @@ const patchModelSchema = <
 // Create/Update/Select DTOs
 export const zCreateBaseInput = patchModelSchema(DTO.CreateBaseSchema)
 export const zUpdateBaseInput = patchModelSchema(DTO.UpdateBaseSchema)
-export const zSelectBaseFilter = zCreateBaseInput.partial()
+export const zBaseFilter = zCreateBaseInput.partial()
 
 export const zCreateCategoryInput = patchModelSchema(DTO.CreateCategorySchema)
 export const zUpdateCategoryInput = patchModelSchema(DTO.UpdateCategorySchema)
-export const zSelectategorFilter = zCreateCategoryInput.partial()
+export const zategorFilter = zCreateCategoryInput.partial()
 
 export const zCreatePostInput = patchModelSchema(DTO.CreatePostSchema).extend({
   authorId: z.string().uuid(),
 })
 export const zUpdatePostInput = patchModelSchema(DTO.UpdatePostSchema)
-export const zSelectPostFilter = zCreatePostInput.partial()
+export const zPostFilter = zCreatePostInput.partial()
 
 export const zCreateProfileInput = patchModelSchema(DTO.CreateProfileSchema)
 export const zUpdateProfileInput = patchModelSchema(DTO.UpdateProfileSchema)
-export const zSelectProfileFilter = zCreateProfileInput.partial()
+export const zProfileFilter = zCreateProfileInput.partial()
 
 export const zCreateUserInput = patchModelSchema(DTO.CreateUserSchema)
 export const zUpdateUserInput = patchModelSchema(DTO.UpdateUserSchema)
-export const zSelectUserFilter = zCreateUserInput.partial()
+export const zUserFilter = zCreateUserInput.partial()
