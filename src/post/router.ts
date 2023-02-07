@@ -43,13 +43,13 @@ export class PostRouter {
       .run(this.edgedb),
   )
 
-  listWithTotal = p.optional.input(zPostListInput).query(({ input }) => ({
-    data: E.selectWithTotal(e.Post, (_p) => ({
+  listWithTotal = p.optional.input(zPostListInput).query(({ input }) =>
+    E.selectWithTotal(e.Post, (_p) => ({
       ...input,
       filter: E.filterPropsEqual(e.Post, input.filter),
       ...e.Post['*'],
     })).run(this.edgedb),
-  }))
+  )
 
   get = p.optional.input(zIdInput).query(({ input: { id } }) =>
     e
