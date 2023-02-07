@@ -8,20 +8,17 @@ import type {
 } from 'zod'
 import { z } from 'zod'
 
-import {
-  CreateBaseSchema,
-  CreateCategorySchema,
-  CreatePostSchema,
-  CreateProfileSchema,
-  CreateUserSchema,
-  UpdateBaseSchema,
-  UpdateCategorySchema,
-  UpdatePostSchema,
-  UpdateProfileSchema,
-  UpdateUserSchema,
-} from './generated/zod'
+import * as M from './generated/interfaces.zod'
+import * as DTO from './generated/zod'
 
-export * from './generated/interfaces.zod'
+export const zStdBaseObject = M.stdBaseObjectSchema
+export const zStdObject = M.stdObjectSchema
+export const zBase = M.baseSchema
+export const zRole = M.roleSchema
+export const zCategory = M.categorySchema
+export const zPost = M.postSchema
+export const zProfile = M.profileSchema
+export const zUser = M.userSchema
 
 const patchModelOmitMask = { createdAt: true } as const
 
@@ -44,16 +41,25 @@ const patchModelSchema = <
   Catchall
 > => s.omit(patchModelOmitMask)
 
-// Create/Update DTOs
-export const createBaseSchema = patchModelSchema(CreateBaseSchema)
-export const createCategorySchema = patchModelSchema(CreateCategorySchema)
-export const createPostSchema = patchModelSchema(CreatePostSchema).extend({
+// Create/Update/Select DTOs
+export const zCreateBaseInput = patchModelSchema(DTO.CreateBaseSchema)
+export const zUpdateBaseInput = patchModelSchema(DTO.UpdateBaseSchema)
+export const zSelectBaseFilter = zCreateBaseInput.partial()
+
+export const zCreateCategoryInput = patchModelSchema(DTO.CreateCategorySchema)
+export const zUpdateCategoryInput = patchModelSchema(DTO.UpdateCategorySchema)
+export const zSelectategorFilter = zCreateCategoryInput.partial()
+
+export const zCreatePostInput = patchModelSchema(DTO.CreatePostSchema).extend({
   authorId: z.string().uuid(),
 })
-export const createProfileSchema = patchModelSchema(CreateProfileSchema)
-export const createUserSchema = patchModelSchema(CreateUserSchema)
-export const updateBaseSchema = patchModelSchema(UpdateBaseSchema)
-export const updateCategorySchema = patchModelSchema(UpdateCategorySchema)
-export const updatePostSchema = patchModelSchema(UpdatePostSchema)
-export const updateProfileSchema = patchModelSchema(UpdateProfileSchema)
-export const updateUserSchema = patchModelSchema(UpdateUserSchema)
+export const zUpdatePostInput = patchModelSchema(DTO.UpdatePostSchema)
+export const zSelectPostFilter = zCreatePostInput.partial()
+
+export const zCreateProfileInput = patchModelSchema(DTO.CreateProfileSchema)
+export const zUpdateProfileInput = patchModelSchema(DTO.UpdateProfileSchema)
+export const zSelectProfileFilter = zCreateProfileInput.partial()
+
+export const zCreateUserInput = patchModelSchema(DTO.CreateUserSchema)
+export const zUpdateUserInput = patchModelSchema(DTO.UpdateUserSchema)
+export const zSelectUserFilter = zCreateUserInput.partial()
