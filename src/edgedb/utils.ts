@@ -5,18 +5,20 @@ import type { Except, Spread } from 'type-fest'
 import type { ModelMap as ModelTypeMap } from '~/models'
 
 import { /* type EdgedbClient, */ e } from '.'
+import { castMaps } from './generated/edgeql-js/imports'
 import type {
   $expr_Insert,
   $expr_InsertUnlessConflict,
   InsertShape,
 } from './generated/edgeql-js/insert'
 import type models from './generated/edgeql-js/modules/default'
+import { type $bool } from './generated/edgeql-js/modules/std'
 // import type { $Object } from './generated/edgeql-js/modules/std'
 import type { $expr_PathNode, $linkPropify } from './generated/edgeql-js/path'
+import * as $ from './generated/edgeql-js/reflection'
 import type {
   ComputeSelectCardinality,
   objectTypeToSelectShape,
-  SelectFilterExpression,
   SelectModifierNames,
   SelectModifiers,
   UnknownSelectModifiers,
@@ -36,15 +38,23 @@ import type { $expr_Update, UpdateShape } from './generated/edgeql-js/update'
 export type ModelMap = Except<typeof models, 'Base'>
 export type Model = ModelMap[keyof ModelMap]
 
+type EBool = castMaps.orScalarLiteral<$.TypeSet<$bool>>
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export const all = (...args: [EBool, ...EBool[]]) => e.all(e.set(...args))
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export const any = (...args: [EBool, ...EBool[]]) => e.any(e.set(...args))
+
 export const filterPropsEqual = <
   K extends keyof ModelMap,
   M extends ModelMap[K],
 >(
   m: M,
   filter: Partial<ModelTypeMap[K]>,
-): SelectFilterExpression =>
+): $.$expr_Function<$bool, $.Cardinality.One> =>
   // @ts-expect-error ignore
-  e.set(Object.entries(filter).map(([k, v]) => e.op(m[k], '=', v)))
+  all(...Object.entries(filter).map(([k, v]) => e.op(m[k], '=', v)))
 
 export type UpsertShape<Root extends $expr_PathNode> = InsertShape<
   Root['__element__']
