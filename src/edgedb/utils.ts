@@ -70,44 +70,44 @@ export type computeExtendedTsType<
   : computeTsTypeCard<Spread<Ext, BaseTypeToTsType<T>>, C>
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-// export const selectWithTotal = <
-//   /**
-//    * The selector to count.
-//    */
-//   Expr extends ObjectTypeExpression,
-//   /**
-//    * The shape of the select statement.
-//    */
-//   Shape extends objectTypeToSelectShape<Expr['__element__']> &
-//     SelectModifiers<Expr['__element__']>,
-//   /**
-//    * The modifiers that can be applied to the select statement.
-//    *
-//    * @remarks
-//    * By default, this is any modifier that is not offset or limit.
-//    */
-//   Modifiers extends UnknownSelectModifiers = Pick<Shape, SelectModifierNames>,
-// >(
-//   expr: Expr,
-//   shape: (
-//     scope: $scopify<Expr['__element__']> &
-//       $linkPropify<{
-//         [k in keyof Expr]: k extends '__cardinality__'
-//           ? Cardinality.One
-//           : Expr[k]
-//       }>,
-//   ) => Readonly<Shape>,
-// ) => {
-//   return e.select({
-//     total: e.count(
-//       e.select<Expr, Shape, Modifiers>(
-//         expr,
-//         (scope) => omit(['offset', 'limit'], shape(scope)) as Readonly<Shape>,
-//       ),
-//     ),
-//     data: e.select<Expr, Shape, Modifiers>(expr, shape),
-//   })
-// }
+export const selectWithTotal = <
+  /**
+   * The selector to count.
+   */
+  Expr extends ObjectTypeExpression,
+  /**
+   * The shape of the select statement.
+   */
+  Shape extends objectTypeToSelectShape<Expr['__element__']> &
+    SelectModifiers<Expr['__element__']>,
+  /**
+   * The modifiers that can be applied to the select statement.
+   *
+   * @remarks
+   * By default, this is any modifier that is not offset or limit.
+   */
+  Modifiers extends UnknownSelectModifiers = Pick<Shape, SelectModifierNames>,
+>(
+  expr: Expr,
+  shape: (
+    scope: $scopify<Expr['__element__']> &
+      $linkPropify<{
+        [k in keyof Expr]: k extends '__cardinality__'
+          ? Cardinality.One
+          : Expr[k]
+      }>,
+  ) => Readonly<Shape>,
+) => {
+  return e.select({
+    total: e.count(
+      e.select<Expr, Shape, Modifiers>(
+        expr,
+        (scope) => omit(['offset', 'limit'], shape(scope)) as Readonly<Shape>,
+      ),
+    ),
+    data: e.select<Expr, Shape, Modifiers>(expr, shape),
+  })
+}
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const insertSelect = <
