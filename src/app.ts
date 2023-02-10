@@ -26,7 +26,7 @@ import { EdgedbClient /* , EdgedbUtil */ } from '~/edgedb'
 import { HelloModule } from '~/hello'
 import { PostModule } from '~/post'
 import { HelloController, ProtectedController, SseController } from '~/rest'
-import { TrpcModule } from '~/trpc'
+import { TrpcModule } from '~/trpc/module'
 
 const edgedbClient = e.createClient()
 // const edgedbUtil = new EdgedbUtil(edgedbClient)
