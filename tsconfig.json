@@ -10,5 +10,6 @@
     "moduleResolution": "Node",
     "noPropertyAccessFromIndexSignature": false
   },
-  "reflection": true
+  "reflection": true,
+  "exclude": ["dist", "**/__template.ts"]
 }

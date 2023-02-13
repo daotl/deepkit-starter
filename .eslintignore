@@ -1,3 +1,5 @@
+__template.ts
+lefthook.yml
 docker-compose-dev
 generated
 vendor

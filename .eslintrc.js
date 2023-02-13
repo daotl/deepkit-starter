@@ -1,6 +1,7 @@
 module.exports = {
   root: true,
   extends: '@daotl/eslint-config/typescript',
+  plugins: ['codegen'],
   overrides: [
     {
       files: '*.ts',
@@ -9,7 +10,8 @@ module.exports = {
         project: 'tsconfig.json',
       },
       rules: {
-        '@typescript-eslint/consistent-type-imports': 0,
+        'codegen/codegen': 'error',
+        '@typescript-eslint/consistent-type-imports': 'off',
       },
     },
   ],

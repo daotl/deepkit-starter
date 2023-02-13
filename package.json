@@ -90,6 +90,7 @@
     "dotenv-cli": "^7.0.0",
     "edgedb-zod": "1.0.0-beta4",
     "eslint": "^8.33.0",
+    "eslint-plugin-codegen": "^0.17.0",
     "lefthook": "^1.2.8",
     "prettier": "^2.8.3",
     "rimraf": "^4.1.2",

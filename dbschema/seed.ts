@@ -4,7 +4,7 @@ import { createClient } from 'edgedb'
 import { omit } from 'rambdax/immutable'
 
 import { AuthConfig } from '~/auth'
-import { type UpsertShape, e } from '~/edgedb'
+import { e } from '~/edgedb'
 import * as E from '~/edgedb'
 
 const client = createClient().withConfig({
@@ -14,23 +14,19 @@ const client = createClient().withConfig({
 async function main(): Promise<void> {
   // const eu = new EdgedbUtil(client)
   // Examples:
-  // const ex1 = await E.insertSelect(
-  //   e.User,
+  // const ex1 = await E.User.insertSelect(
   //   { name: '', email: '' },
   //   // { name: true, email: true },
   // ).run()
-  // const ex2 = await E.updateSelect(
-  //   e.User,
+  // const ex2 = await E.User.updateSelect(
   //   () => ({ set: { name: '', email: '' } }),
   //   // { name: true, email: true },
   // ).run()
-  // const ex3 = await E.updateSelect(
-  //   e.User,
+  // const ex3 = await E.User.updateSelect(
   //   () => ({ filter_single: { email: '' }, set: { name: '', email: '' } }),
   //   // { name: true, email: true },
   // ).run()
-  // const ex4 = await E.upsertSelect(
-  //   e.User,
+  // const ex4 = await E.User.upsertSelect(
   //   e.User.email,
   //   {
   //     email: 'nex@daot.io',
@@ -39,28 +35,27 @@ async function main(): Promise<void> {
   //   identity,
   //   // { name: true, email: true },
   // ).run()
-  // const ex5 = await E.selectCount(e.User, () => ({
+  // const ex5 = await E.User.selectCount(() => ({
   //   offset: 100,
   //   limit: 10,
   //   ...e.User['*'],
   // })).run()
 
   const users = await Promise.all([
-    E.upsert(
-      e.User,
+    E.User.upsert(
       e.User.email,
       {
         id: new AuthConfig().mockUserId,
         email: 'nex@daot.io',
         name: 'Nex',
       },
-      omit<UpsertShape<typeof e.User>>('id'),
+      omit<E.UpsertShape<typeof e.User>>('id'),
     ),
-    E.upsert(e.User, e.User.email, {
+    E.User.upsert(e.User.email, {
       email: 'john@daot.io',
       name: 'John',
     }),
-    E.upsert(e.User, e.User.email, {
+    E.User.upsert(e.User.email, {
       email: 'marie@daot.io',
       name: 'Marie',
     }),
@@ -92,7 +87,7 @@ async function main(): Promise<void> {
     ...posts.map((p) =>
       // FIXME: Update author also. Currently if we don't omit `author`, there's an error:
       //   Error: Cannot extract repeated or aliased expression into 'WITH' block, expression or its aliases appear outside root scope
-      E.upsert(e.Post, e.Post.title, p, omit<typeof p>('author')).run(client),
+      E.Post.upsert(e.Post.title, p, omit<typeof p>('author')).run(client),
     ),
   ])
 }

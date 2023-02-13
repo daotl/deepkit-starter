@@ -44,7 +44,7 @@ export class PostRouter {
   )
 
   listWithTotal = p.optional.input(zPostListInput).query(({ input }) =>
-    E.selectWithTotal(e.Post, (_p) => ({
+    E.Post.selectWithTotal((_p) => ({
       ...input,
       filter: E.filterPropsEqual(e.Post, input.filter),
       ...e.Post['*'],
