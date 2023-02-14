@@ -1,11 +1,4 @@
-import type {
-  objectInputType,
-  objectOutputType,
-  UnknownKeysParam,
-  ZodObject,
-  ZodRawShape,
-  ZodTypeAny,
-} from 'zod'
+import type * as Z from 'zod'
 import { z } from 'zod'
 
 import * as M from './generated/interfaces.zod'
@@ -23,23 +16,29 @@ export const zUser = M.userSchema
 const patchModelOmitMask = { createdAt: true } as const
 
 const patchModelSchema = <
-  T extends ZodRawShape,
-  UnknownKeys extends UnknownKeysParam,
-  Catchall extends ZodTypeAny,
-  S extends ZodObject<
+  T extends Z.ZodRawShape,
+  UnknownKeys extends Z.UnknownKeysParam,
+  Catchall extends Z.ZodTypeAny,
+  S extends Z.ZodObject<
     T,
     UnknownKeys,
     Catchall,
-    objectOutputType<T, Catchall>,
-    objectInputType<T, Catchall>
+    Z.objectOutputType<T, Catchall>,
+    Z.objectInputType<T, Catchall>
   >,
 >(
   s: S,
-): ZodObject<
+): Z.ZodObject<
   Omit<S['shape'], keyof typeof patchModelOmitMask>,
   UnknownKeys,
   Catchall
-> => s.omit(patchModelOmitMask)
+> =>
+  s.omit(
+    patchModelOmitMask as Z.noUnrecognized<
+      typeof patchModelOmitMask,
+      Z.objectKeyMask<T>
+    >,
+  )
 
 // Create/Update/Select DTOs
 export const zCreateBaseInput = patchModelSchema(DTO.CreateBaseSchema)
