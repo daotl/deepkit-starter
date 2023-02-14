@@ -1,4 +1,4 @@
-import type { Except } from 'type-fest'
+import type { EmptyObject, Except } from 'type-fest'
 
 import type { ModelMap as ModelTypeMap } from '~/models'
 
@@ -19,12 +19,18 @@ export const all = (...args: [EBool, ...EBool[]]) => e.all(e.set(...args))
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const any = (...args: [EBool, ...EBool[]]) => e.any(e.set(...args))
 
-export const filterPropsEqual = <
-  K extends keyof ModelMap,
+export function filterPropsEqual<
+  K extends keyof ModelTypeMap,
   M extends ModelMap[K],
 >(
   m: M,
-  filter: Partial<ModelTypeMap[K]>,
-): $.$expr_Function<$bool, $.Cardinality.One> =>
-  // @ts-expect-error ignore
-  all(...Object.entries(filter).map(([k, v]) => e.op(m[k], '=', v)))
+  filter: Exclude<Partial<ModelTypeMap[K]>, EmptyObject>,
+):
+  | $.$expr_Function<$bool, $.Cardinality.One>
+  | $.$expr_Literal<$.ScalarType<'std::bool', boolean, true>> {
+  const filters = Object.entries(filter)
+  return filters.length
+    ? // @ts-expect-error ignore
+      all(...filters.map(([k, v]) => e.op(m[k], '=', v)))
+    : e.bool(true)
+}
